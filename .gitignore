@@ -8,3 +8,7 @@
 /vendor/
 /bin/
 /composer.phar
+/node_modules/
+/bower_components/
+/.idea/
+/web/compiled/*
