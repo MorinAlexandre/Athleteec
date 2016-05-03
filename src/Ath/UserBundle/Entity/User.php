@@ -149,12 +149,21 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\UserContact", mappedBy="userDestinataire")
      */
     private $userContactDestinataires;
+	
+	 /**
+     * @var ArrayCollection User $posts
+     * 
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Post", mappedBy="author")
+     */
+    private $posts;
+	
 
     public function __construct()
     {
         parent::__construct();
         $this->userContactEmmeteurs = new ArrayCollection();
         $this->userContactDestinataires = new ArrayCollection();
+		$this->posts = new ArrayCollection();
     }
 
     /**
@@ -565,5 +574,24 @@ class User extends BaseUser
     {
       return $this->userContactDestinataires;
     }
+	
+    public function getPosts()
+    {
+      return $this->posts;
+    }
+	
+	   public function removePost(\Ath\Mainundle\Entity\Post $post)
+    {
+      $this->posts->removeElement($post);
+    }
+	
+	public function addPost(\Ath\MainBundle\Entity\Post $post)
+    {
+        if (!$this->posts->contains($post))
+            $this->posts->add($post);
+        
+        return $this;
+    }
+	
 
 }
