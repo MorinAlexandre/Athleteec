@@ -11,3 +11,12 @@ unHomme: Un homme
 uneFemme: Une femme
 uneAssociation: Une Association
 registration.dateDeCreation: Date de Création *
+title.edit.profile: Modification du profile
+label.rue: Rue
+placeholder.rue: Rue
+label.ville: Ville
+placeholder.ville: Ville
+label.cp: Code postal
+placeholder.cp: Code postal
+label.description: Description
+placeholder.description: Description

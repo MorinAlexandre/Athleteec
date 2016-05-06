@@ -1,8 +1,27 @@
-{% trans_default_domain 'FOSUserBundle' %}
+<h1>{{ "title.edit.profile" | trans({}, 'fosuser') }}</h1>
+{% include "::flash_messages.html.twig" %}
 
-{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
-    {{ form_widget(form) }}
-    <div>
-        <input type="submit" value="{{ 'profile.edit.submit'|trans }}" />
-    </div>
-{{ form_end(form) }}
+<form action="{{ path('fos_user_profile_edit') }}" method="POST">
+
+	{% if app.user.statutJuridiqueId == 2 %}
+	    {{ form_row(form.nom) }}
+	    {{ form_row(form.dateDeCreation) }}
+	    {{ form_row(form.rue) }}
+	    {{ form_row(form.ville) }}
+	    {{ form_row(form.cp) }}
+	    {{ form_row(form.description) }}
+	{% else %}
+		{{ form_row(form.nom) }}
+		{{ form_row(form.prenom) }}
+	    {{ form_row(form.dateDeNaissance) }}
+	    {{ form_row(form.rue) }}
+	    {{ form_row(form.ville) }}
+	    {{ form_row(form.cp) }}
+	    {{ form_row(form.description) }}
+	{% endif %}
+
+	<input type="submit" class="btn btn-default" name="Enregistrer" value="{{ "save" | trans({}, 'home') }}">
+	{{ form_rest(form) }}
+
+</form>
+
