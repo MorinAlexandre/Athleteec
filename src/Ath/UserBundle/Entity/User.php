@@ -47,14 +47,14 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="prenom", type="string", length=255)
+     * @ORM\Column(name="prenom", type="string", length=255, nullable = true)
      */
     private $prenom;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_de_naissance", type="datetime")
+     * @ORM\Column(name="date_de_naissance", type="datetime", nullable = true)
      */
     private $dateDeNaissance;
 
@@ -138,6 +138,11 @@ class User extends BaseUser
      * @ORM\Column(name="statut_juridique", type="integer")
      */
     private $statutJuridique;
+
+    /**
+     * @ORM\Column(name="date_de_creation", type="datetime", nullable = true)
+     */
+    private $dateDeCreation;
 
     /**
      * @var bool
@@ -523,6 +528,29 @@ class User extends BaseUser
         $this->statutJuridique = $statutJuridique;
 
         return $this;
+    }
+    
+    /**
+     * Set dateDeCreation
+     *
+     * @param \DateTime $dateDeCreation
+     * @return User
+     */
+    public function setDateDeCreation($dateDeCreation)
+    {
+        $this->dateDeCreation = $dateDeCreation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateDeCreation
+     *
+     * @return \DateTime 
+     */
+    public function getDateDeCreation()
+    {
+        return $this->dateDeCreation;
     }
 
     /**
