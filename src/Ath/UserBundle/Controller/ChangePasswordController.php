@@ -25,6 +25,8 @@ class ChangePasswordController extends Controller
     public function changePasswordAction(Request $request)
     {
         $user = $this->getUser();
+        $trad = $this->getTranslator();
+
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
@@ -55,12 +57,13 @@ class ChangePasswordController extends Controller
             $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_SUCCESS, $event);
 
             $userManager->updateUser($user);
-
+            $this->get('session')->getFlashBag()->add('notice', $trad->trans("flash.edit.success", array(), 'home'));
+            
             if (null === $response = $event->getResponse()) {
                 $url = $this->generateUrl('fos_user_profile_show');
                 $response = new RedirectResponse($url);
             }
-
+            
             $dispatcher->dispatch(FOSUserEvents::CHANGE_PASSWORD_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
             return $response;

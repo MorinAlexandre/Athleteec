@@ -4,9 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e9823a9bee1b709dcbe5d04d558bdfb9",
-    "content-hash": "945d7298307c2a21bb13484f427d3b07",
+    "hash": "678e244879546976b660d427400b94a4",
+    "content-hash": "09153566bd2eb9846e9b858795114708",
     "packages": [
+        {
+            "name": "avalanche123/imagine-bundle",
+            "version": "v2.1.2",
+            "target-dir": "Avalanche/Bundle/ImagineBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avalanche123/AvalancheImagineBundle.git",
+                "reference": "e53bc4a5295d7248c5392b4d40e2c517e3cfd922"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/avalanche123/AvalancheImagineBundle/zipball/e53bc4a5295d7248c5392b4d40e2c517e3cfd922",
+                "reference": "e53bc4a5295d7248c5392b4d40e2c517e3cfd922",
+                "shasum": ""
+            },
+            "require": {
+                "imagine/imagine": "v0.4.1",
+                "symfony/framework-bundle": "2.*"
+            },
+            "require-dev": {
+                "makasim/temp-file": "dev-master"
+            },
+            "suggest": {
+                "symfony/twig-bundle": "2.*"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Avalanche\\Bundle\\ImagineBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                }
+            ],
+            "description": "Image manipulation using Imagine and Twig Filters.",
+            "homepage": "https://github.com/avalanche123/AvalancheImagineBundle",
+            "keywords": [
+                "image manipulation",
+                "imagine"
+            ],
+            "time": "2012-12-13 18:34:10"
+        },
         {
             "name": "behat/transliterator",
             "version": "v1.1.0",
@@ -903,6 +953,53 @@
                 "uploadable"
             ],
             "time": "2015-09-28 16:39:27"
+        },
+        {
+            "name": "imagine/imagine",
+            "version": "v0.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avalanche123/Imagine.git",
+                "reference": "9d644b6940a7b30a4c9de1873b625e6a686533be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/9d644b6940a7b30a4c9de1873b625e6a686533be",
+                "reference": "9d644b6940a7b30a4c9de1873b625e6a686533be",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "sami/sami": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Imagine": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                }
+            ],
+            "description": "Image processing for PHP 5.3",
+            "homepage": "http://imagine.readthedocs.org/",
+            "keywords": [
+                "drawing",
+                "graphics",
+                "image manipulation",
+                "image processing"
+            ],
+            "time": "2012-12-13 18:31:18"
         },
         {
             "name": "incenteev/composer-parameter-handler",
