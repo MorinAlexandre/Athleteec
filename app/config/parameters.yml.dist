@@ -6,11 +6,15 @@ parameters:
     database_user: root
     database_password: null
     mailer_transport: smtp
-    mailer_host: 127.0.0.1
+    mailer_host: 10.100.51.30
     mailer_user: null
     mailer_password: null
     secret: 45cffe2956acc4fc5ee6636fa273c15f404f8d3e
     email_from: soumar_i14@myges.fr
-    delivery_address: soumare.iss@gmail.com
+    delivery_address: isoumare@atixnet.fr
     disable_delivery: false
+
+    app_id_facebook: 830799980358755
+    app_secret_facebook: 6699875a62253b874fff855d082ce5ab
+    
     locale: fr
