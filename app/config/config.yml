@@ -110,7 +110,23 @@ hwi_oauth:
             options:
                 # display: popup
                 csrf: true
-
+        twitter:
+            type: twitter
+            client_id: "%app_id_twitter%"
+            client_secret: "%app_secret_twitter%"
+            scope: "email"
+            paths:
+                email: email
+        google:
+            type:                google
+            client_id:           %app_id_google%
+            client_secret:       %app_secret_google%
+            scope:              "email"
+            paths:
+                email: email
+            options:
+                csrf: true
+ 
 # hwi_oauth:
 #     connect:
 #         account_connector: my_user_provider

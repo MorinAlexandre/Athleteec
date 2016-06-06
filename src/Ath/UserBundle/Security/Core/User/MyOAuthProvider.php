@@ -27,12 +27,15 @@ class MyOAuthProvider extends FOSUBUserProvider
             case 'facebook':
                 $user = $this->handleFacebookResponse($response);
                 break;
-           /* case 'google':
+            /*case 'google':
                 $user = $this->handleGoogleResponse($response);
-                break;
+                break;*/
             case 'twitter':
                 $user = $this->handleTwitterResponse($response);
-                break;*/
+                break;
+            case 'google':
+                $user = $this->handleGoogleResponse($response);
+                break;
         }
        
       /*  var_dump($response->getResourceOwner());
@@ -151,21 +154,83 @@ class MyOAuthProvider extends FOSUBUserProvider
         return $user;
     }
     
- /*   public function handleGoogleResponse($response) {
-        // User is from Google: DO STUFF HERE \o/
-        // All data from Google
-        $data = $response->getResponse();
-        // His profile image : file_get_contents($data['picture'])
+    public function handleGoogleResponse($response) {
+        $tabResponse = $response->getResponse();
+        $googleId =  $tabResponse['id']; // Facebook ID, e.g. 537091253102004
+        $prenom = $tabResponse['given_name'];
+        $nom = $tabResponse['family_name'];
+        $gender = $tabResponse['gender'];  
+
+        $email = $response->getEmail();
+        
+        // search user in database
+        $user = $this->userManager->findUserBy(
+            array(
+                'email' => $email
+            )
+        );
+        
+        if(!$user) {
+            $user = new User();
+            $user->setGoogleId($googleId);
+            $user->setEmail($email);
+            $user->setEnabled(1);
+            $user->addRole('ROLE_USER');
+            $user->setNom($nom);
+            $user->setPrenom($prenom);
+            if($gender == "male")
+                $user->setStatutJuridique(0);
+            else
+                $user->setStatutJuridique(1);
+            
+            $secret = md5(uniqid(rand(), true));
+            $user->setPassword($secret);
+            $this->em->persist($user);
+            $this->em->flush();
+        }
  
         return $user;
     }
     
     public function handleTwitterResponse($response) {
-        // User is from Twitter: DO STUFF HERE \o/
-        // All data from Twitter
-        $data = $response->getResponse();
-        // His profile image : file_get_contents($data['profile_image_url'])
+        /*$token = $response->getAccessToken();
+        $tabResponse = $response->getResponse();
+        
+        $facebookId =  $tabResponse['id']; // Facebook ID, e.g. 537091253102004
+        $prenom = $tabResponse['first_name'];
+        $nom = $tabResponse['last_name'];
+        $gender = $tabResponse['gender'];*/
+
+        $email = $response->getEmail();
+        
+        // search user in database
+        $user = $this->userManager->findUserBy(
+            array(
+                'email' => $email
+            )
+        );
+        var_dump($response);
+        // var_dump($twitter);
+        die();
+        if(!$user) {
+            /*$user = new User();
+            $user->setFacebookId($facebookId);
+            $user->setEmail($email);
+            $user->setEnabled(1);
+            $user->addRole('ROLE_USER');
+            $user->setNom($nom);
+            $user->setPrenom($prenom);
+            if($gender == "male")
+                $user->setStatutJuridique(0);
+            else
+                $user->setStatutJuridique(1);
+            
+            $secret = md5(uniqid(rand(), true));
+            $user->setPassword($secret);
+            $this->em->persist($user);
+            $this->em->flush();*/
+        }
  
         return $user;
-    }*/
+    }
 }
