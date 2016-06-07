@@ -17,4 +17,9 @@ parameters:
     app_id_facebook: 830799980358755
     app_secret_facebook: 6699875a62253b874fff855d082ce5ab
     
+    app_id_twitter: wXBu9J7GCJMNqG3bdud7VAzui
+    app_secret_twitter: Q0NZ0KPsvIme8DKvzQ5Lkc0cgyQekGeAlPlLy68yy6EAt9LMAL
+    
+    app_id_google: 754878249591-1c9nmdvufe00kgujetin91ina01it858.apps.googleusercontent.com
+    app_secret_google: Xo2zko72qpeeCaHBCYBxKKLt
     locale: fr
