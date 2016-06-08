@@ -706,6 +706,9 @@ class User extends BaseUser
       return $this->demandeCelebrites;
     }
 
+    public function getNomComplet() {
+        return ucfirst($this->prenom) . ' ' . ucfirst($this->nom);
+    }
 
     /*** GESTION UPLOADS ***/
 
@@ -836,4 +839,8 @@ class User extends BaseUser
         }
     }
   /**** FIN GESTION UPLOADS ****/
+
+    public function __toString() {
+      return $this->getNomComplet();
+    }
 }
