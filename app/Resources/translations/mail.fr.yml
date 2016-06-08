@@ -1,0 +1,2 @@
+registration.email.subject: 'Bienvenue %username%'
+registration.flash.mail_send: "Un mail vous a été envoyé afin de confirmer votre inscription"

@@ -66,4 +66,9 @@ class ProfileController extends BaseController
 
         return $this->redirect($this->generateUrl('fos_user_profile_edit'));
     }
+
+    public function demandeCelebriteAction()
+    {
+        return $this->render('@ath_user_path/demande_celebrite.html.twig');
+    }
 }
