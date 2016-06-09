@@ -60,4 +60,37 @@ class SendMail
         $this->container->get('session')->getFlashBag()->add('notice', $trad->trans("registration.flash.mail_send", array(), 'mail'));
     }
 
+
+    /**
+     * Permet d'envoyer un mail afin de faire une demande célébrité aux administrateurs
+     *
+     * @param User $user, string $message
+     */
+    public function demandeCelebrite($user,$message)
+    {
+        $trad = $this->container->get('translator');
+        $subject = $trad->trans(
+            "demande_celebrite.email.subject",
+            array('%id%' => $user->getId()),
+            'mail'
+        );
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($user->getEmail())
+            ->setTo($this->from);
+
+        $message->setBody(
+            $this->container->get('templating')->render(
+                '::Ath/Mail/mail_demande_celebrite.html.twig',
+                array(
+                    'user' => $user,
+                    'message' => $message
+                )
+            )
+        )
+        ->setContentType('text/html');
+
+        $this->container->get('mailer')->send($message);
+    }
 }

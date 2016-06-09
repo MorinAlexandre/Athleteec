@@ -189,7 +189,7 @@ class User extends BaseUser
 
     /**
      * @var ArrayCollection DemandeCelebrites $demandeCelebrites
-     * 
+     * @ORM\OrderBy({"dateDemande" = "DESC"})
      * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\DemandeCelebrite", mappedBy="createdBy")
      */
     private $demandeCelebrites;
@@ -710,7 +710,38 @@ class User extends BaseUser
         return ucfirst($this->prenom) . ' ' . ucfirst($this->nom);
     }
 
-    /*** GESTION UPLOADS ***/
+    /******* Function pratique **************/
+    /**
+     * Vérifie si l'utilisateur peut faire une demande de célébrité
+     * @return boolean
+     */
+    public function canDemandeCelebrite()
+    {
+        $ok = false;
+
+        $demandeCelebrites = $this->getDemandeCelebrites();
+
+        if(empty($demandeCelebrites))
+            $ok=true;
+        else // le user a déjà une ou plusieurs demande
+        {
+            $lastDemande = $demandeCelebrites[0];
+            
+            $dateDemande = $lastDemande->getDateDemande();
+
+            $dateAutoriser = new \DateTime($dateDemande->format('Y-m-d'));
+            $dateAutoriser->add(new \DateInterval('P30D'));
+            $now = new \DateTime();
+            if($now > $dateAutoriser)
+                $ok = true;
+        }
+
+        return $ok;
+    }
+
+    /********* Fin function pratique **********/
+
+    /*** GESTION UPLOADS photo de profile ***/
 
     public function getAbsolutePath()
     {
