@@ -52,9 +52,9 @@ class Post
      * @var \Ath\UserBundle\Entity\User
      *
 	 * @ORM\ManyToOne(targetEntity="Ath\UserBundle\Entity\User",inversedBy="posts")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
      */
-    private $author;
+    private $createdBy;
 
     /**
      * @var int
@@ -68,9 +68,15 @@ class Post
      */
     private $filePosts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Comment", mappedBy="post", cascade={"persist", "remove"})
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->filePosts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -153,26 +159,26 @@ class Post
     }
 
     /**
-     * Set author
+     * Set createdBy
      *
-     * @param integer $author
+     * @param integer $createdBy
      * @return Post
      */
-    public function setAuthor($author)
+    public function setCreatedBy($createdBy)
     {
-        $this->author = $author;
+        $this->createdBy = $createdBy;
 
         return $this;
     }
 
     /**
-     * Get author
+     * Get createdBy
      *
      * @return integer 
      */
-    public function getAuthor()
+    public function getCreatedBy()
     {
-        return $this->author;
+        return $this->createdBy;
     }
 
     /**
@@ -224,12 +230,30 @@ class Post
     }
 
     /**
-     * Remove image
+     * Remove filePost
      *
      * @param \Ath\MainBundle\Entity\FilePost $filePost
      */
-    public function removeFilePost(\Ath\MainBundle\Entity\Image $filePost)
+    public function removeFilePost(\Ath\MainBundle\Entity\FilePost $filePost)
     {
         $this->filePosts->removeElement($filePost);
+    }
+
+    public function getComments()
+    {
+      return $this->comments;
+    }
+    
+    public function removeComments(\Ath\Mainundle\Entity\Comment $comment)
+    {
+      $this->comments->removeElement($comment);
+    }
+    
+    public function addComment(\Ath\MainBundle\Entity\Comment $comment)
+    {
+        if (!$this->comments->contains($comment))
+            $this->comments->add($comment);
+        
+        return $this;
     }
 }

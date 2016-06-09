@@ -183,9 +183,16 @@ class User extends BaseUser
 	/**
      * @var ArrayCollection User $posts
      * 
-     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Post", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Post", mappedBy="createdBy")
      */
     private $posts;
+
+    /**
+     * @var ArrayCollection User $comments
+     * 
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Comment", mappedBy="createdBy")
+     */
+    private $comments;
 
     /**
      * @var ArrayCollection DemandeCelebrites $demandeCelebrites
@@ -715,6 +722,24 @@ class User extends BaseUser
         return $this;
     }
 	
+    public function getComments()
+    {
+      return $this->comments;
+    }
+    
+    public function removeComments(\Ath\Mainundle\Entity\Comment $comment)
+    {
+      $this->comments->removeElement($comment);
+    }
+    
+    public function addComment(\Ath\MainBundle\Entity\Comment $comment)
+    {
+        if (!$this->comments->contains($comment))
+            $this->comments->add($comment);
+        
+        return $this;
+    }
+
     public function getDemandeCelebrites()
     {
       return $this->demandeCelebrites;
