@@ -57,19 +57,21 @@ class Post
     private $author;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
-     */
-    private $photo;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="status", type="boolean")
      */
     private $status;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\FilePost", mappedBy="post", cascade={"persist", "remove"})
+     */
+    private $filePosts;
+
+    public function __construct()
+    {
+        $this->filePosts = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -174,29 +176,6 @@ class Post
     }
 
     /**
-     * Set photo
-     *
-     * @param string $photo
-     * @return Post
-     */
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    /**
      * Set status
      *
      * @param integer $status
@@ -217,5 +196,40 @@ class Post
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Get filePosts
+     *
+     * @return Array collection of filePosts
+     */
+    public function getFilePosts()
+    {
+        return $this->filePosts;
+    }
+
+    /**
+     * Add filePost
+     *
+     * @param \Ath\MainBundle\Entity\FilePost $filePost
+     *
+     * @return Produit
+     */
+    public function addFilePost(\Ath\MainBundle\Entity\FilePost $filePost)
+    {
+        if (!$this->filePosts->contains($filePost))
+            $this->filePosts[] = $filePost;
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param \Ath\MainBundle\Entity\FilePost $filePost
+     */
+    public function removeFilePost(\Ath\MainBundle\Entity\Image $filePost)
+    {
+        $this->filePosts->removeElement($filePost);
     }
 }
