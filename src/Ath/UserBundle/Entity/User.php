@@ -83,7 +83,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="siteweb", type="string", length=255)
+     * @ORM\Column(name="siteweb", type="string", length=255, nullable = true)
      */
     private $siteWeb;
 
@@ -1053,8 +1053,8 @@ class User extends BaseUser
         $ok = false;
 
         $demandeCelebrites = $this->getDemandeCelebrites();
-
-        if(empty($demandeCelebrites))
+        
+        if(count($demandeCelebrites) == 0)
             $ok=true;
         else // le user a déjà une ou plusieurs demande
         {
