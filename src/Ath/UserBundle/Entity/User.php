@@ -190,16 +190,86 @@ class User extends BaseUser
 	/**
      * @var ArrayCollection User $posts
      * 
-     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Post", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Post", mappedBy="createdBy")
      */
     private $posts;
 
     /**
-     * @var ArrayCollection DemandeCelebrites $demandeCelebrites
+     * @var ArrayCollection User $comments
      * 
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Comment", mappedBy="createdBy")
+     */
+    private $comments;
+
+    /**
+     * @var ArrayCollection User $userEmetteursFollow
+     * 
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\UserFollow", mappedBy="userEmetteur")
+     */
+    private $userEmetteursFollow; // veut suivre
+
+    /**
+     * @var ArrayCollection User $userDestinatairesFollow
+     * 
+     * @ORM\OrderBy({"dateDemande" = "DESC"})
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\UserFollow", mappedBy="userDestinataire")
+     */
+    private $userDestinatairesFollow;
+
+    /**
+     * @var ArrayCollection UserDiscussion $userDiscussionEmetteurs
+     *
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\UserDiscussion", mappedBy="userEmetteur")
+     */
+    private $userDiscussionEmetteurs;
+
+    /**
+     * @var ArrayCollection UserDiscussion $userDiscussionEmetteurs
+     *
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\UserDiscussion", mappedBy="userDestinataire")
+     */
+    private $userDiscussionDestinataires;
+
+    /**
+     * @var ArrayCollection DemandeCelebrites $demandeCelebrites
+     * @ORM\OrderBy({"dateDemande" = "DESC"})
      * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\DemandeCelebrite", mappedBy="createdBy")
      */
     private $demandeCelebrites;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Sport", cascade={"persist"})
+     * @ORM\JoinTable(name="user_interet_sport")
+     */
+    private $userInteretSports;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Produit", cascade={"persist"})
+     * @ORM\JoinTable(name="user_comparateur_produit")
+     */
+    private $userComparateurProduits;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Sport", cascade={"persist"})
+     * @ORM\JoinTable(name="association_sport")
+     */
+    private $associationSports;
+
+    /**
+     * @var ArrayCollection Produits $produits
+     * @ORM\OrderBy({"updatedAt" = "DESC"})
+     * 
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Produit", mappedBy="createdBy")
+     */
+    private $produits; // produits créés par le user
+
+    /**
+     * @var \Ath\UserBundle\Entity\User
+     *
+     * @ORM\OneToOne(targetEntity="Ath\MainBundle\Entity\UserSetting", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $userSetting;
 
     /**
      * @Assert\File(maxSize="6000000")
@@ -209,8 +279,11 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-		$this->posts = new ArrayCollection();
+		$this->posts = new ArrayCollection();     
         $this->demandeCelebrites = new ArrayCollection();
+        $this->userInteretSports = new ArrayCollection();
+        $this->userComparateurProduits = new ArrayCollection();
+        $this->associationSports = new ArrayCollection();
     }
 
     /**
@@ -718,7 +791,7 @@ class User extends BaseUser
       return $this->posts;
     }
 	
-	public function removePost(\Ath\Mainundle\Entity\Post $post)
+	public function removePost(\Ath\MainBundle\Entity\Post $post)
     {
       $this->posts->removeElement($post);
     }
@@ -731,16 +804,277 @@ class User extends BaseUser
         return $this;
     }
 	
+    public function getComments()
+    {
+      return $this->comments;
+    }
+    
+    public function removeComments(\Ath\MainBundle\Entity\Comment $comment)
+    {
+      $this->comments->removeElement($comment);
+    }
+    
+    public function addComment(\Ath\MainBundle\Entity\Comment $comment)
+    {
+        if (!$this->comments->contains($comment))
+            $this->comments->add($comment);
+        
+        return $this;
+    }
+
+    public function getUserEmetteursFollow()
+    {
+      return $this->userEmetteursFollow;
+    }
+    
+    public function removeUserEmetteursFollow(\Ath\MainBundle\Entity\UserFollow $userEmetteurFollow)
+    {
+      $this->userEmetteursFollow->removeElement($userEmetteurFollow);
+    }
+    
+    public function addUserEmetteursFollow(\Ath\MainBundle\Entity\UserFollow $userEmetteurFollow)
+    {
+        if (!$this->userEmetteursFollow->contains($userEmetteurFollow))
+            $this->userEmetteursFollow->add($userEmetteurFollow);
+        
+        return $this;
+    }
+
+    public function getUserDestinatairesFollow()
+    {
+      return $this->userDestinatairesFollow;
+    }
+    
+    public function removeUserDestinatairesFollow(\Ath\MainBundle\Entity\UserFollow $userDestinataireFollow)
+    {
+      $this->userDestinatairesFollow->removeElement($userDestinataireFollow);
+    }
+    
+    public function addUserDestinatairesFollow(\Ath\MainBundle\Entity\UserFollow $userDestinataireFollow)
+    {
+        if (!$this->userDestinatairesFollow->contains($userDestinataireFollow))
+            $this->userDestinatairesFollow->add($userDestinataireFollow);
+        
+        return $this;
+    }
+
+    public function getUserDiscussionEmetteurs()
+    {
+      return $this->userDiscussionEmetteurs;
+    }
+    
+    public function removeUserDiscussionEmetteur(\Ath\MainBundle\Entity\UserDiscussion $userDiscussion)
+    {
+      $this->userDiscussionEmetteurs->removeElement($userDiscussion);
+    }
+    
+    public function addUserDiscussionEmetteurs(\Ath\MainBundle\Entity\UserDiscussion $userDiscussion)
+    {
+        if (!$this->userDiscussionEmetteurs->contains($userDiscussion))
+            $this->userDiscussionEmetteurs->add($userDiscussion);
+        
+        return $this;
+    }
+
+    public function getUserDiscussionDestinataires()
+    {
+      return $this->userDiscussionDestinataires;
+    }
+    
+    public function removeUserDiscussionDestinataire(\Ath\MainBundle\Entity\UserDiscussion $userDiscussion)
+    {
+      $this->userDiscussionDestinataires->removeElement($userDiscussion);
+    }
+    
+    public function addUserDiscussionDestinataire(\Ath\MainBundle\Entity\UserDiscussion $userDiscussion)
+    {
+        if (!$this->userDiscussionDestinataires->contains($userDiscussion))
+            $this->userDiscussionDestinataires->add($userDiscussion);
+        
+        return $this;
+    }
+
     public function getDemandeCelebrites()
     {
       return $this->demandeCelebrites;
     }
 
+    /**
+     * Add userInteretSports
+     *
+     * @param \Ath\MainBundle\Entity\Sport $userInteretSport
+     * @return User
+     */
+    public function addUserInteretSport(\Ath\MainBundle\Entity\Sport $userInteretSport) {
+        if (!$this->userInteretSports->contains($userInteretSport)) {
+          $this->userInteretSports[] = $userInteretSport;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove userInteretSports
+     *
+     * @param \Ath\MainBundle\Entity\Sport $userInteretSport
+     */
+    public function removeUserInteretSport(\Ath\MainBundle\Entity\Sport $userInteretSport) {
+        $this->userInteretSports->removeElement($userInteretSport);
+    }
+
+   /**
+    * Get userInteretSports
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+    public function getUserInteretSports() {
+        return $this->userInteretSports;
+    }
+
+    /**
+     * Add userComparateurProduit
+     *
+     * @param \Ath\MainBundle\Entity\Produit $produit
+     * @return User
+     */
+    public function addUserComparateurProduit(\Ath\MainBundle\Entity\Produit $produit) {
+        if (!$this->userComparateurProduits->contains($produit)) {
+          $this->userComparateurProduits[] = $produit;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove userComparateurProduit
+     *
+     * @param \Ath\MainBundle\Entity\Produit $produit
+     */
+    public function removeUserComparateurProduit(\Ath\MainBundle\Entity\Produit $produit) {
+        $this->userComparateurProduits->removeElement($produit);
+    }
+
+   /**
+    * Get userComparateurProduits
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+    public function getUserComparateurProduits() {
+        return $this->userComparateurProduits;
+    }
+
+    /**
+     * Add associationSports
+     *
+     * @param \Ath\MainBundle\Entity\Sport $userInteretSport
+     * @return User
+     */
+    public function addAssociationSport(\Ath\MainBundle\Entity\Sport $associationSport) {
+        if (!$this->associationSports->contains($associationSport)) {
+          $this->associationSports[] = $associationSport;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove associationSports
+     *
+     * @param \Ath\MainBundle\Entity\Sport $associationSport
+     */
+    public function removeAssociationSport(\Ath\MainBundle\Entity\Sport $associationSport) {
+        $this->associationSports->removeElement($associationSport);
+    }
+
+   /**
+    * Get associationSports
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+    public function getAssociationSports() {
+        return $this->associationSports;
+    }
+
+    public function getProduits()
+    {
+      return $this->produits;
+    }
+    
+    public function removeProduit(\Ath\MainBundle\Entity\Produit $produit)
+    {
+      $this->produits->removeElement($produit);
+    }
+    
+    public function addProduit(\Ath\MainBundle\Entity\Produit $produit)
+    {
+        if (!$this->produits->contains($produit))
+            $this->produits->add($produit);
+        
+        return $this;
+    }
+
+    /**
+     * Set userSetting
+     *
+     * @param UserSetting $userSetting
+     * @return User
+     */
+    public function setUserSetting($userSetting)
+    {
+        $this->userSetting = $userSetting;
+
+        return $this;
+    }
+
+    /**
+     * Get userSetting
+     *
+     * @return User
+     */
+    public function getUserSetting()
+    {
+        return $this->userSetting;
+    }
+
+    /******* Function pratique **************/
+
     public function getNomComplet() {
         return ucfirst($this->prenom) . ' ' . ucfirst($this->nom);
     }
+	
+	public function getPrefixMail($email) {
+		list($prefix, $suffixe) = explode('@', $email);
+		return $prefix;
+	}
 
-    /*** GESTION UPLOADS ***/
+    /**
+     * Vérifie si l'utilisateur peut faire une demande de célébrité
+     * @return boolean
+     */
+    public function canDemandeCelebrite()
+    {
+        $ok = false;
+
+        $demandeCelebrites = $this->getDemandeCelebrites();
+
+        if(empty($demandeCelebrites))
+            $ok=true;
+        else // le user a déjà une ou plusieurs demande
+        {
+            $lastDemande = $demandeCelebrites[0];
+            
+            $dateDemande = $lastDemande->getDateDemande();
+
+            $dateAutoriser = new \DateTime($dateDemande->format('Y-m-d'));
+            $dateAutoriser->add(new \DateInterval('P30D'));
+            $now = new \DateTime();
+            if($now > $dateAutoriser)
+                $ok = true;
+        }
+
+        return $ok;
+    }
+
+    /********* Fin function pratique **********/
+
+    /*** GESTION UPLOADS photo de profile ***/
 
     public function getAbsolutePath()
     {

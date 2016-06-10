@@ -7,3 +7,15 @@ services:
     ath_main.services.send_mail:
         class: Ath\MainBundle\Services\SendMail
         arguments: ['@service_container', '@doctrine.orm.entity_manager']
+
+# Handler
+    ath.form.handler.demande_celebrite:
+        class: Ath\MainBundle\Form\Handler\DemandeCelebriteFormHandler
+        scope: request
+        arguments:
+          - "@request"
+          - "@doctrine.orm.default_entity_manager"
+          - "@session"
+          - "@translator"
+        tags:
+            - { name: form.handler, alias: demande_celebrite.handler }
