@@ -223,6 +223,12 @@ class User extends BaseUser
     private $userInteretSports;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Produit", cascade={"persist"})
+     * @ORM\JoinTable(name="user_comparateur_produit")
+     */
+    private $userComparateurProduits;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Sport", cascade={"persist"})
      * @ORM\JoinTable(name="association_sport")
      */
@@ -247,6 +253,7 @@ class User extends BaseUser
 		$this->posts = new ArrayCollection();     
         $this->demandeCelebrites = new ArrayCollection();
         $this->userInteretSports = new ArrayCollection();
+        $this->userComparateurProduits = new ArrayCollection();
         $this->associationSports = new ArrayCollection();
     }
 
@@ -808,7 +815,7 @@ class User extends BaseUser
      * Add userInteretSports
      *
      * @param \Ath\MainBundle\Entity\Sport $userInteretSport
-     * @return Member
+     * @return User
      */
     public function addUserInteretSport(\Ath\MainBundle\Entity\Sport $userInteretSport) {
         if (!$this->userInteretSports->contains($userInteretSport)) {
@@ -836,10 +843,41 @@ class User extends BaseUser
     }
 
     /**
+     * Add userComparateurProduit
+     *
+     * @param \Ath\MainBundle\Entity\Produit $produit
+     * @return User
+     */
+    public function addUserComparateurProduit(\Ath\MainBundle\Entity\Produit $produit) {
+        if (!$this->userComparateurProduits->contains($produit)) {
+          $this->userComparateurProduits[] = $produit;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove userComparateurProduit
+     *
+     * @param \Ath\MainBundle\Entity\Produit $produit
+     */
+    public function removeUserComparateurProduit(\Ath\MainBundle\Entity\Produit $produit) {
+        $this->userComparateurProduits->removeElement($produit);
+    }
+
+   /**
+    * Get userComparateurProduits
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+    public function getUserComparateurProduits() {
+        return $this->userComparateurProduits;
+    }
+
+    /**
      * Add associationSports
      *
      * @param \Ath\MainBundle\Entity\Sport $userInteretSport
-     * @return Member
+     * @return User
      */
     public function addAssociationSport(\Ath\MainBundle\Entity\Sport $associationSport) {
         if (!$this->associationSports->contains($associationSport)) {
