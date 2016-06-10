@@ -1053,8 +1053,8 @@ class User extends BaseUser
         $ok = false;
 
         $demandeCelebrites = $this->getDemandeCelebrites();
-
-        if(empty($demandeCelebrites))
+        
+        if(count($demandeCelebrites) == 0)
             $ok=true;
         else // le user a déjà une ou plusieurs demande
         {
