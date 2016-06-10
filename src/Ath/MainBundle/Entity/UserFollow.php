@@ -69,8 +69,8 @@ class UserFollow
      * @ORM\Column(name="accepte", type="boolean")
      */
     private $accepte;
-
-
+    
+    
 
     /**
      * Set createdAt

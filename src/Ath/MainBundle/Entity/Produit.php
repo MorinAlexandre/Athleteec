@@ -70,6 +70,11 @@ class Produit
     private $categorieProduit;
 
     /**
+     * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\FileProduit", mappedBy="produit", cascade={"persist", "remove"})
+     */
+    private $fileProduits;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -215,5 +220,40 @@ class Produit
     public function getCategorieProduit()
     {
         return $this->categorieProduit;
+    }
+
+    /**
+     * Get fileProduits
+     *
+     * @return Array collection of fileProduits
+     */
+    public function getFileProduits()
+    {
+        return $this->fileProduits;
+    }
+
+    /**
+     * Add fileProduit
+     *
+     * @param \Ath\MainBundle\Entity\FileProduit $fileProduit
+     *
+     * @return Produit
+     */
+    public function addFileProduit(\Ath\MainBundle\Entity\FileProduit $fileProduit)
+    {
+        if (!$this->fileProduits->contains($fileProduit))
+            $this->fileProduits[] = $fileProduit;
+
+        return $this;
+    }
+
+    /**
+     * Remove fileProduit
+     *
+     * @param \Ath\MainBundle\Entity\FileProduit $fileProduit
+     */
+    public function removefileProduit(\Ath\MainBundle\Entity\FileProduit $fileProduit)
+    {
+        $this->fileProduits->removeElement($fileProduit);
     }
 }
