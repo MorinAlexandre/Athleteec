@@ -243,6 +243,14 @@ class User extends BaseUser
     private $produits; // produits créés par le user
 
     /**
+     * @var \Ath\UserBundle\Entity\User
+     *
+     * @ORM\OneToOne(targetEntity="Ath\MainBundle\Entity\UserSetting", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $userSetting;
+
+    /**
      * @Assert\File(maxSize="6000000")
      */
     public $file;
@@ -920,6 +928,29 @@ class User extends BaseUser
             $this->produits->add($produit);
         
         return $this;
+    }
+
+    /**
+     * Set userSetting
+     *
+     * @param UserSetting $userSetting
+     * @return User
+     */
+    public function setUserSetting($userSetting)
+    {
+        $this->userSetting = $userSetting;
+
+        return $this;
+    }
+
+    /**
+     * Get userSetting
+     *
+     * @return User
+     */
+    public function getUserSetting()
+    {
+        return $this->userSetting;
     }
 
     /******* Function pratique **************/
