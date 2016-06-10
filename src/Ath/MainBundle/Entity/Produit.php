@@ -75,6 +75,24 @@ class Produit
     private $fileProduits;
 
     /**
+     * @ORM\Column(name="prix", type="float")
+     */
+    private $prix;
+
+    /**
+     * @ORM\Column(name="url", type="string", length=255)
+     */
+    private $url;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->fileProduits = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -255,5 +273,51 @@ class Produit
     public function removefileProduit(\Ath\MainBundle\Entity\FileProduit $fileProduit)
     {
         $this->fileProduits->removeElement($fileProduit);
+    }
+
+    /**
+     * Set prix
+     *
+     * @param float $prix
+     * @return Produit
+     */
+    public function setPrix($prix)
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    /**
+     * Get prix
+     *
+     * @return float 
+     */
+    public function getPrix()
+    {
+        return $this->prix;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Produit
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
