@@ -71,8 +71,6 @@
                                                     class="ladda-spinner"></span></button>
                                         <span id="result">
                                         </span>
-
-<<<<<<< HEAD
                                     </div>
                                 </div>
                             </div>
@@ -88,22 +86,31 @@
 
                                     <form action="{{ path("fos_user_security_check") }}" method="post"
                                           id="subscribeForm">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                                    
                                         <div class="authorization_form">
+                                            <h2>{{ "connexion" | trans({}, 'home') }}</h2>
+                                            {% if error %}
+                                                <div class="alert alert-warning">
+                                                    <strong>{{ "formConnection.errorPass" | trans({},'home') }}</strong>
+                                                </div>
+                                            {% endif %}
                                             <div class="auth_input clearfix">
                                                 <div class="icon">
                                                     <i class="fa fa-envelope fa-2x"></i>
                                                 </div>
-                                                <label class="enter_label"> Email:</label>
-                                                <input type="text" class="form-control e-mail_in" id="login"
-                                                       placeholder="Your email">
+                                                <label class="enter_label"> {{ "mail_adress" | trans({}, 'fosuser') }}:</label>
+
+                                                <input type="text" class="form-control e-mail_in" id="username" name="_username"
+                                                       placeholder="{{ "mail_adress" | trans({}, 'fosuser') }}" value="{{ last_username }}" required="required">
                                             </div>
                                             <div class="auth_input clearfix">
                                                 <div class="icon">
                                                     <i class="fa fa-key fa-2x"></i>
                                                 </div>
-                                                <label class="enter_label"> Password:</label>
-                                                <input type="password" class="form-control e-mail_in" id="pass"
-                                                       placeholder="*******">
+                                                <label class="enter_label"> {{ "password" | trans({}, 'fosuser') }}: </label>
+                                                <input type="password" class="form-control e-mail_in" name="_password" id="password"
+                                                       placeholder="{{ "password" | trans({}, 'fosuser') }}" required="required" autofocus="">
                                             </div>
                                         </div>
                                         <div class="auth_login">
