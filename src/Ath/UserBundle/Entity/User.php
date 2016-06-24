@@ -241,6 +241,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Sport", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      * @ORM\JoinTable(name="user_interet_sport")
      */
     private $userInteretSports;
@@ -253,6 +254,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Sport", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      * @ORM\JoinTable(name="association_sport")
      */
     private $associationSports;
