@@ -42,6 +42,16 @@ class UserRepository extends EntityRepository
 		return $query;
 	}
 
+    public function getAllExceptMe($user) {
+        $query = $this
+            ->createQueryBuilder('u')
+            ->where('u.id != :user')
+            ->setParameter('user', $user)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     /**
      * getFollowers => retourne les users qui me suivent
      * 
@@ -60,6 +70,29 @@ class UserRepository extends EntityRepository
             ))
             ->getQuery()
             ->getResult();
+
+        return $query;
+    }
+
+    /**
+     * countFollowers => retourne les users qui me suivent
+     * 
+     * @param  User $userDestinataire
+     * @return array of collection of this
+     */
+    public function countFollowers($userDestinataire){
+        $query = $this->createQueryBuilder('u')
+            ->select('COUNT(uef)')
+            ->Join('u.userEmetteursFollow', 'uef')
+            ->where('uef.userDestinataire = :userDestinataire')
+            ->andWhere('uef.accepte = :accepte')
+            ->orderBy('u.nom', 'DESC')
+            ->setParameters(array(
+                'userDestinataire' => $userDestinataire,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->getSingleScalarResult();
 
         return $query;
     }
