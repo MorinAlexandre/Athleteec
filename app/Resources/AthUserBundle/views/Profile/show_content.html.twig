@@ -114,17 +114,27 @@
         <div class="col-md-3">
           <div class="user_friends">
             <h3>
-              Follow
-              <span>({{ countFollowers }})</span>
+              Followers
+              {% if countFollowers > 12 %}
+                <a href="{{ path('ath_main_followers', {'slug': userToShow.slug }) }}"><span style="color: blue">({{ countFollowers }})</span></a>
+              {% else %}
+                  <span>({{ countFollowers }})</span>
+              {% endif %}
             </h3>
-           {#  <div class="row">
-              <div class="col-xs-3 col-sm-1 col-md-4 friend-item">
-                <a href="#">
+            <div class="row">
+              {% for oneFollower in followers %}
+                    <div class="col-xs-3 col-sm-1 col-md-4 friend-item">
+                      <a href="{{ path('ath_user_show_profile',{'slug': oneFollower.slug }) }}">
+                        <img class="" src="{{ oneFollower.webPath | imagine_filter('mini') }}" alt="{{ oneFollower }}" title="{{ oneFollower }}" />
+                        <p style="color: black">{{ oneFollower }}:</p>
+                      </a>
+                    </div>
+              {% endfor %}
 
-                  <img src="images/members-1-55.jpg" class="" height="65" width="65" alt=""></a>
-              </div>
-            </div> #}
-
+              {% if countFollowers > 12 %}
+                  <a href="{{ path('ath_main_followers', {'slug': userToShow.slug }) }}"><button class="btn-new-info">{{ "voir_tous" | trans({}, 'home') }}</button></a>
+              {% endif %}
+            </div>
           </div>
         </div>
         <div class="col-md-9">

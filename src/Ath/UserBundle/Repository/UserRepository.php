@@ -63,12 +63,61 @@ class UserRepository extends EntityRepository
             ->Join('u.userEmetteursFollow', 'uef')
             ->where('uef.userDestinataire = :userDestinataire')
             ->andWhere('uef.accepte = :accepte')
-            ->orderBy('u.nom', 'DESC')
+            ->addOrderBy('u.prenom', 'ASC')
+            ->addOrderBy('u.nom', 'ASC')
             ->setParameters(array(
                 'userDestinataire' => $userDestinataire,
                 'accepte' => 1
             ))
             ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    /**
+     * getFollowers => retournes 10 users qui me suivent
+     * 
+     * @param  User $userDestinataire, integer first = premier resultat a recuperer
+     * @return array of collection of this
+     */
+    public function getTenFollowers($userDestinataire, $first = 0){
+        $query = $this->createQueryBuilder('u')
+            ->Join('u.userEmetteursFollow', 'uef')
+            ->where('uef.userDestinataire = :userDestinataire')
+            ->andWhere('uef.accepte = :accepte')
+            ->addOrderBy('u.prenom', 'ASC')
+            ->addOrderBy('u.nom', 'ASC')
+            ->setParameters(array(
+                'userDestinataire' => $userDestinataire,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->setFirstResult($first)
+            ->setMaxResults(10)
+            ->getResult();
+
+        return $query;
+    }
+
+    /**
+     * getFollowers => retourne les 12 derniers followers du user
+     * 
+     * @param  User $userDestinataire
+     * @return array of collection of this
+     */
+    public function getLastFollowers($userDestinataire){
+        $query = $this->createQueryBuilder('u')
+            ->Join('u.userEmetteursFollow', 'uef')
+            ->where('uef.userDestinataire = :userDestinataire')
+            ->andWhere('uef.accepte = :accepte')
+            ->orderBy('uef.updatedAt', 'DESC')
+            ->setParameters(array(
+                'userDestinataire' => $userDestinataire,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->setMaxResults(12)
             ->getResult();
 
         return $query;
