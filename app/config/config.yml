@@ -398,3 +398,11 @@ ath_main:
             ROLE_ADMIN_COMMENT_DELETE: Supprimer un commentaire
             ROLE_ADMIN_COMMENT_EXPORT: Exporter un commentaire
             ROLE_ADMIN_COMMENT: Tous les droits commentaires
+        Evenements sportifs:
+            ROLE_ADMIN_EVENT_ADMIN_LIST: Liste des évènements sportifs
+            ROLE_ADMIN_EVENT_ADMIN_VIEW: Voir un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_CREATE: Créer un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_EDIT: Modification d'un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_DELETE: Supprimer un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_EXPORT: Exporter un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN: Tous les droits évènements sportifs

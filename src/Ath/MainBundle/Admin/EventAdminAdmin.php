@@ -71,7 +71,7 @@ class EventAdminAdmin extends Admin
             ->add('file', 'image', array(
                 'data_class' => 'Symfony\Component\HttpFoundation\File\File',
                 'label' => 'Photo',
-                'required' => true,
+                'required' => ($id) ? false : true,
                 'image_web_path' => ($id && is_object($event)) ? $this->getRequest()->getBasePath().'/'.$event->getWebPath() : ''// affiche
             ))
             ->add('libelle')
@@ -137,4 +137,12 @@ class EventAdminAdmin extends Admin
             'csv', 'xls'
         );
     }
+
+    public function getDataSourceIterator()
+    {
+        $datasourceit = parent::getDataSourceIterator();
+        $datasourceit->setDateTimeFormat('d/m/Y H:i'); //change this to suit your needs
+        return $datasourceit;
+    }
 }
+ 

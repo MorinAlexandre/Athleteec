@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Ath\MainBundle\Validator\Constraints as MainAssert;
 
 /**
  * EventAdmin
@@ -16,6 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="Ath\MainBundle\Repository\EventAdminRepository")
  * @UniqueEntity("libelle")
  * @ORM\HasLifecycleCallbacks
+* @MainAssert\DateCompare
  */
 class EventAdmin
 {
