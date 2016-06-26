@@ -49,6 +49,7 @@ class EventAdminAdmin extends Admin
             ->add('createdAt', 'array', array('label' => "Créé le", 'template' => '@ath_admin_path/Commun/list_date.html.twig'))
             ->add('updatedAt','array', array('label' => "Modifié le",'template' => '@ath_admin_path/Commun/list_date.html.twig'))
             ->add('siteWeb')
+            ->add('themeSports', null, array('label' => 'Sports concernés'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
