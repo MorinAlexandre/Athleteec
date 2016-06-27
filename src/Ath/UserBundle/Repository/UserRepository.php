@@ -3,6 +3,7 @@
 namespace Ath\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * UserRepository
@@ -16,9 +17,45 @@ class UserRepository extends EntityRepository
         $query = $this
             ->createQueryBuilder('u')
             ->where('u.statutJuridique = :statutJuridique')
-            ->setParameter('statutJuridique', 2)
+            ->setParameter('statutJuridique', 3)
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    public function getAssociation($id) {
+        $query = $this
+            ->createQueryBuilder('u')
+            ->where('u.statutJuridique = :statutJuridique and u.id = :id')
+            ->setParameter('statutJuridique', 3)
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function getAssociationList($page=1, $maxperpage=10)
+    {
+        $query = $this
+            ->createQueryBuilder('u')
+            ->where('u.statutJuridique = :statutJuridique')
+            ->setParameter('statutJuridique', 3)
+            ->getQuery();
+
+        $query->setFirstResult(($page-1) * $maxperpage)
+            ->setMaxResults($maxperpage);
+
+        return new Paginator($query);
+    }
+
+    public function countAssociation($name = null, $localisation = null) {
+        $query = $this
+            ->createQueryBuilder('u')
+            ->where('u.statutJuridique = :statutJuridique and u.name = :name and  u.ville = :ville ')
+            ->setParameter('statutJuridique', 3)
+            ->setParameter('name', $name)
+            ->setParameter('ville', $localisation)
+            ->getQuery();
+        return count($query);
     }
 }
