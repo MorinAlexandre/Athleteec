@@ -14,6 +14,7 @@
     "require": {
         "php": ">=5.3.9",
         "symfony/symfony": "2.8.*",
+        "symfony/assetic-bundle": "~2.3",
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
         "symfony/swiftmailer-bundle": "~2.3",
@@ -23,10 +24,10 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "gedmo/doctrine-extensions": "v2.4.7",
-        "avalanche123/imagine-bundle": "^2.1",
         "hwi/oauth-bundle": "0.4.*@dev",
         "sonata-project/doctrine-orm-admin-bundle": "^2.3",
-        "knplabs/knp-paginator-bundle": "^2.5"
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "liip/imagine-bundle": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

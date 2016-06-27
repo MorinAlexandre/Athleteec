@@ -66,17 +66,24 @@ class CategorieProduitAdmin extends Admin
     {
         $formMapper
             ->add('libelle')
-            ->add('description', 'text', array('template' => '@ath_admin_path/Commun/list_sub_string.html.twig'))
+            ->add('description')
         ;
     }
 
     public function getExportFormats()
     {
         return array(
-            'csv'
+            'csv', 'xls'
         );
     }
 
+    public function getDataSourceIterator()
+    {
+        $datasourceit = parent::getDataSourceIterator();
+        $datasourceit->setDateTimeFormat('d/m/Y H:i'); //change this to suit your needs
+        return $datasourceit;
+    }
+    
     public function getBatchActions()
     {
         $actions = parent::getBatchActions();

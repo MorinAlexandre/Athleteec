@@ -14,7 +14,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% if is_granted('ROLE_ADMIN') %}
+        {% if is_granted('ROLE_ADMIN_TABORD') %}
             {% include 'top_nav_admin.html.twig' %}
         {% else %}
             {% include 'top_nav.html.twig' %}
@@ -28,7 +28,42 @@
             {% endblock %}
         </div>
         {% block javascripts %}
+            <script type="text/javascript">
+            $(document).ready(function($) {
+                
+                $( "#searchUser" ).autocomplete({
+                    source: function( request, response ){
+                        $.ajax({
+                            url: "{{path('ath_main_search_user')}}",
+                            data: {
+                                string: request.term
+                            },
+                            beforeSend: function(xhr) {
+                                // $("#atix_caissebundle_facture_filtre_fkSoc").addClass("loadinggif-for-input");
+                            },
+                            success: function( data ) {
+                                // $("#atix_caissebundle_facture_filtre_fkSoc").removeClass("loadinggif-for-input");
+                                // console.log(data);
+                                // response( data.append(data.img) );
+                                response(data);
 
+                            }
+                        });
+                    },
+                    create: function () {
+                        $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+                            var url = '{{ path("ath_user_show_profile", {"slug": "toto"}) }}';
+                            url = url.replace("toto", item.slug);
+
+                            return $('<li>')
+                                .append('<a href='+url+'>' + item.img + ' ' + item.value + '<br>'+ '('+ item.ville+')'+ '</a>')
+                                .appendTo(ul);
+                        };
+                    }                    
+                });
+            });
+
+            </script>
         {% endblock %}
     </body>
 </html>

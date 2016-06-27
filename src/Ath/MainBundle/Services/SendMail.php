@@ -66,7 +66,7 @@ class SendMail
      *
      * @param User $user, string $messageDemande
      */
-    public function demandeCelebrite($user,$messageDemande)
+    public function demandeCelebrite($user, $destinataire, $messageDemande)
     {
         $trad = $this->container->get('translator');
         $subject = $trad->trans(
@@ -78,13 +78,14 @@ class SendMail
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($user->getEmail())
-            ->setTo($this->from);
+            ->setTo($destinataire->getEmail());
 
         $message->setBody(
             $this->container->get('templating')->render(
                 '::Ath/Mail/mail_demande_celebrite.html.twig',
                 array(
                     'user' => $user,
+                    'destinataire' => $destinataire,
                     'message' => $messageDemande
                 )
             )
@@ -159,4 +160,108 @@ class SendMail
 
         $this->container->get('mailer')->send($message);
     }
+
+
+    /**
+     * Permet d'informer le group valideur de la validation d'une demande de célébrité
+     *
+     * @param demandeCelebrite $demandeCelebrite, User $destinataire
+     */
+    public function validationDemandeCelebriteForValideur($demandeCelebrite,$destinataire)
+    {
+        $trad = $this->container->get('translator');
+        $user = $demandeCelebrite->getCreatedBy();
+        $subject = $trad->trans(
+            "demande_celebrite.email.subject",
+            array("%id%" => $demandeCelebrite->getCreatedBy()->getId()),
+            'mail'
+        );
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($this->from)
+            ->setTo($destinataire->getEmail());
+
+        $message->setBody(
+            $this->container->get('templating')->render(
+                '::Ath/Mail/mail_validation_demande_celebrite_for_valideur.html.twig',
+                array(
+                    'destinataire' => $destinataire,
+                    'demandeCelebrite' => $demandeCelebrite
+                )
+            )
+        )
+        ->setContentType('text/html');
+
+        $this->container->get('mailer')->send($message);
+    }
+
+    /**
+     * Permet d'informer le group valideur du refus d'une demande de célébrité
+     *
+     * @param demandeCelebrite $demandeCelebrite, User $destinataire
+     */
+    public function refusDemandeCelebriteForValideur($demandeCelebrite,$destinataire)
+    {
+        $trad = $this->container->get('translator');
+        $user = $demandeCelebrite->getCreatedBy();
+        $subject = $trad->trans(
+            "demande_celebrite.email.subject",
+            array("%id%" => $demandeCelebrite->getCreatedBy()->getId()),
+            'mail'
+        );
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($this->from)
+            ->setTo($destinataire->getEmail());
+
+        $message->setBody(
+            $this->container->get('templating')->render(
+                '::Ath/Mail/mail_refus_demande_celebrite_for_valideur.html.twig',
+                array(
+                    'destinataire' => $destinataire,
+                    'demandeCelebrite' => $demandeCelebrite
+                )
+            )
+        )
+        ->setContentType('text/html');
+
+        $this->container->get('mailer')->send($message);
+    }
+
+    /**
+     * Permet d'informer un user qu'un autre user suis ses actualités
+     *
+     * @param User $userEmetteur, User $userDestinataire
+     */
+    public function suivreUser($userEmetteur,$userDestinataire)
+    {
+        $trad = $this->container->get('translator');
+
+        $subject = $trad->trans(
+            "user.nouveau.suivi",
+            array("%user%" => $userEmetteur),
+            'mail'
+        );
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject($subject)
+            ->setFrom($this->from)
+            ->setTo($userDestinataire->getEmail());
+
+        $message->setBody(
+            $this->container->get('templating')->render(
+                '::Ath/Mail/mail_new_follower.html.twig',
+                array(
+                    'userDestinataire' => $userDestinataire,
+                    'userEmetteur' => $userEmetteur
+                )
+            )
+        )
+        ->setContentType('text/html');
+
+        $this->container->get('mailer')->send($message);
+    }
+
 }

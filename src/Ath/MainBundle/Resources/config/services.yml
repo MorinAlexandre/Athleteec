@@ -81,6 +81,18 @@ services:
         tags:
             - {name: sonata.admin, manager_type: orm, group: Administration, label: Commentaires des articles}
 
+    admin.group_application:
+        class: Ath\MainBundle\Admin\GroupApplicationAdmin
+        arguments: [~, Ath\MainBundle\Entity\GroupApplication, ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Administration, label: Gestion des groupes administrateurs}
+
+    admin.event_admin:
+        class: Ath\MainBundle\Admin\EventAdminAdmin
+        arguments: [~, Ath\MainBundle\Entity\EventAdmin, ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Administration, label: Gestion des évènements sportifs}
+
 # ----------------------- FIN GESTION ADMIN -------------------------------------------------
 
 # Widget Form pour les statuts de demande de célébrité
@@ -94,3 +106,33 @@ services:
         class: Ath\MainBundle\Form\WidgetType\ImageType
         tags:
             - { name: form.type, alias: image }
+    
+    ath_main.form.type.roles_app:
+        class: Ath\MainBundle\Form\Type\RolesAppFormType
+        arguments:
+          - ""
+          - ""
+          - ""
+        tags:
+            - { name: form.type, alias: roles_app }
+
+    # Listener sur entity User
+    ath_main.user_follow_listener:
+        class: Ath\MainBundle\EventListener\UserFollowIndexer
+        arguments: ['@service_container']
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postFlush }
+
+    # Handler
+    ath.form.handler.user_setting:
+        class: Ath\MainBundle\Form\Handler\UserSettingFormHandler
+        scope: request
+        arguments:
+          - "@request"
+          - "@doctrine.orm.default_entity_manager"
+          - "@session"
+          - "@translator"
+        tags:
+            - { name: form.handler, alias: user_setting.handler }

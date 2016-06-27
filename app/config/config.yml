@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
@@ -42,7 +43,8 @@ twig:
         "%kernel.root_dir%/Resources/views/Ath/User": ath_user_path
         "%kernel.root_dir%/Resources/views": ath_views
     form:
-        resources: [':Ath/Form:ath_form_page_theme.html.twig']
+        resources: [':Ath/Form:ath_form_page_theme.html.twig', 'SonataCoreBundle:Form:datepicker.html.twig']
+
 
 # Doctrine Configuration
 doctrine:
@@ -150,38 +152,41 @@ sonata_admin:
     assets:
         stylesheets:
             # - compiled/front/common.css
-            - bundles/atixheader/css/shared/bootstrap.css
-            - bundles/atixheader/css/shared/bootstrap.responsive-table.css
-            - bundles/atixheader/css/shared/sonata.atixSkin.css
-            - bundles/atixformextra/css/farbtastic.css
-            - bundles/sonataadmin/vendor/AdminLTE/css/font-awesome.min.css
-            - bundles/sonataadmin/vendor/AdminLTE/css/ionicons.min.css
+            - sonata/atixheader/css/shared/bootstrap.css
+            - sonata/atixheader/css/shared/bootstrap.responsive-table.css
+            - sonata/atixheader/css/shared/sonata.atixSkin.css
+            - sonata/atixformextra/css/farbtastic.css
+            - sonata/sonataadmin/vendor/AdminLTE/css/font-awesome.min.css
+            - sonata/sonataadmin/vendor/AdminLTE/css/ionicons.min.css
             - cssAdmin/admin.css
-            - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
-            - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
-            - bundles/sonataadmin/vendor/select2/select2.css
-            - bundles/sonataadmin/vendor/select2/select2-bootstrap.css
-            - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
-            - bundles/sonataadmin/css/styles.css
-            - bundles/sonataadmin/css/layout.css
-            - bundles/atixformextra/css/farbtastic.css
+            - sonata/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
+            - sonata/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
+            - sonata/sonataadmin/vendor/select2/select2.css
+            - sonata/sonataadmin/vendor/select2/select2-bootstrap.css
+            - sonata/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
+            - sonata/sonataadmin/css/styles.css
+            - sonata/sonataadmin/css/layout.css
+            - sonata/atixformextra/css/farbtastic.css
         javascripts:
             # Defaults:
             - components/jquery/jquery.min.js
-            - bundles/atixheader/js/atixResponsTable.js
-            - bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
-            - bundles/sonatacore/vendor/moment/min/moment-with-locales.min.js
+            - sonata/atixheader/js/atixResponsTable.js
+            - sonata/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
+            - sonata/sonatacore/vendor/moment/min/moment-with-locales.min.js
             - components/bootstrap/js/bootstrap.min.js
-            - bundles/atixformextra/js/bootstrap-datetimepicker.js
-            - bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js
-            - bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js
-            - bundles/sonataadmin/jquery/jquery.form.js
-            - bundles/sonataadmin/jquery/jquery.confirmExit.js
-            - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
-            - bundles/sonataadmin/vendor/select2/select2.min.js
-            - bundles/sonataadmin/App.js
-            - bundles/sonataadmin/Admin.js
-            - bundles/atixformextra/js/farbtastic.js
+            - sonata/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
+            # - sonata/atixformextra/js/bootstrap-datetimepicker.js
+            - sonata/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js
+            - sonata/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js
+            - sonata/sonataadmin/jquery/jquery.form.js
+            - sonata/sonataadmin/jquery/jquery.confirmExit.js
+            - sonata/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
+            - sonata/sonataadmin/vendor/select2/select2.min.js
+            - sonata/sonataadmin/App.js
+            - sonata/sonataadmin/Admin.js
+            - sonata/atixformextra/js/farbtastic.js
+    security:
+        handler: sonata.admin.security.handler.role
 
 knp_paginator:
     template:
@@ -226,55 +231,178 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
+    twig.extension.intl:
+       class: Twig_Extensions_Extension_Intl
+       tags:
+           - { name: twig.extension }
 
-avalanche_imagine:
-    web_root: %kernel.root_dir%/../web
-    cache_prefix: uploads/avalanche/
-    filters:
-        user_detail:
-            type:    thumbnail
-            options: { size: [124, 124], mode: outbound, quality: 100, format: [png, jpg]  }
-        user:
-            type:    thumbnail
-            options: { size: [96, 96], mode: outbound, quality: 100, format: [png, jpg]  }
-        user_short:
-            type:    thumbnail
-            options: { size: [48, 48], mode: outbound, quality: 100, format: [png, jpg]  }
-        user_mini:
-            type:    thumbnail
-            options: { size: [32, 32], mode: outbound, quality: 100, format: [png, jpg]  }
-        user_micro:
-            type:    thumbnail
-            options: { size: [24, 24], mode: outbound, quality: 100, format: [png, jpg]  }
+# avalanche_imagine:
+#     source_root:  %kernel.root_dir%/../web
+#     web_root: %kernel.root_dir%/../web
+#     cache_prefix: uploads/avalanche/
+#     driver:       gd
+#     filters:
+#         user_detail:
+#             type:    thumbnail
+#             options: { size: [124, 124], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         user:
+#             type:    thumbnail
+#             options: { size: [96, 96], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         user_short:
+#             type:    thumbnail
+#             options: { size: [48, 48], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         user_mini:
+#             type:    thumbnail
+#             options: { size: [32, 32], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         user_micro:
+#             type:    thumbnail
+#             options: { size: [24, 24], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
 
-        produit_detail:
-            type:    thumbnail
-            options: { size: [124, 124], mode: outbound, quality: 100, format: [png, jpg]  }
-        produit:
-            type:    thumbnail
-            options: { size: [96, 96], mode: outbound, quality: 100, format: [png, jpg]  }
-        produit_short:
-            type:    thumbnail
-            options: { size: [48, 48], mode: outbound, quality: 100, format: [png, jpg]  }
-        produit_mini:
-            type:    thumbnail
-            options: { size: [32, 32], mode: outbound, quality: 100, format: [png, jpg]  }
-        produit_micro:
-            type:    thumbnail
-            options: { size: [24, 24], mode: outbound, quality: 100, format: [png, jpg]  }
+#         produit_detail:
+#             type:    thumbnail
+#             options: { size: [124, 124], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         produit:
+#             type:    thumbnail
+#             options: { size: [96, 96], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         produit_short:
+#             type:    thumbnail
+#             options: { size: [48, 48], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         produit_mini:
+#             type:    thumbnail
+#             options: { size: [32, 32], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         produit_micro:
+#             type:    thumbnail
+#             options: { size: [24, 24], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
 
-        post_detail:
-            type:    thumbnail
-            options: { size: [124, 124], mode: outbound, quality: 100, format: [png, jpg]  }
-        post:
-            type:    thumbnail
-            options: { size: [96, 96], mode: outbound, quality: 100, format: [png, jpg]  }
-        post_short:
-            type:    thumbnail
-            options: { size: [48, 48], mode: outbound, quality: 100, format: [png, jpg]  }
-        post_mini:
-            type:    thumbnail
-            options: { size: [32, 32], mode: outbound, quality: 100, format: [png, jpg]  }
-        post_micro:
-            type:    thumbnail
-            options: { size: [24, 24], mode: outbound, quality: 100, format: [png, jpg]  }
+#         post_detail:
+#             type:    thumbnail
+#             options: { size: [124, 124], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         post:
+#             type:    thumbnail
+#             options: { size: [96, 96], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         post_short:
+#             type:    thumbnail
+#             options: { size: [48, 48], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         post_mini:
+#             type:    thumbnail
+#             options: { size: [32, 32], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+#         post_micro:
+#             type:    thumbnail
+#             options: { size: [24, 24], mode: outbound, quality: 100, format: [png, jpg, jpeg, gif]  }
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        mini:
+            quality: 75
+            filters:
+                thumbnail: { size: [70, 70], mode: outbound }
+        small:
+            quality: 75
+            filters:
+                thumbnail: { size: [120, 90], mode: outbound }
+        medium:
+            quality: 75
+            filters:
+                thumbnail: { size: [200, 200], mode: outbound }
+        profile:
+            quality: 75
+            filters:
+                thumbnail: { size: [255, 255], mode: outbound }
+        big:
+            quality: 75
+            filters:
+                thumbnail: { size: [400, 400], mode: outbound }
+ath_main:
+    roles_gp_app:
+        Utilisateur:
+            ROLE_ADMIN_USER_LIST: Liste des utilisateurs
+            ROLE_ADMIN_USER_VIEW: Voir un utilisateurs
+            ROLE_ADMIN_USER_CREATE: Création d'un utilisateur
+            ROLE_ADMIN_USER_EDIT: Modification d'un utilisateur
+            ROLE_ADMIN_USER_DELETE: Supprimer un utilisateur
+            ROLE_ADMIN_USER_EXPORT: Exporter un utilisateur
+            ROLE_ADMIN_USER_PASSWORD: Modifier un mot de passe utilisateur
+            ROLE_ADMIN_USER: Tous les droits utilisateurs
+        Demande de celebrite:
+            # ROLE_ADMIN_DEMANDE_CELEBRITE_LIST: Liste des demandes de célébrités
+            # ROLE_ADMIN_DEMANDE_CELEBRITE_VIEW: Voir une demande de célébrité
+            # ROLE_ADMIN_DEMANDE_CELEBRITE_DELETE: Supprimer une demande de célébrité
+            # ROLE_ADMIN_DEMANDE_CELEBRITE_EXPORT: Exporter une demande de célébrité
+            # ROLE_ADMIN_REPONSE_DEMANDE_CELEBRITE: Valider/refuser une demande de célébrité
+            ROLE_ADMIN_DEMANDE_CELEBRITE: Valider/refuser une demande de célébrité
+        Groupe:
+            ROLE_ADMIN_GROUP_APPLICATION_LIST: Liste des groupes d'administration
+            ROLE_ADMIN_GROUP_APPLICATION_VIEW: Voir un groupe d'administration
+            ROLE_ADMIN_GROUP_APPLICATION_CREATE: Création d'un groupe d'administration
+            ROLE_ADMIN_GROUP_APPLICATION_EDIT: Modification d'un groupe d'administration
+            ROLE_ADMIN_GROUP_APPLICATION_DELETE: Supprimer un groupe d'administration
+            ROLE_ADMIN_GROUP_APPLICATION_EXPORT: Exporter un groupe d'administration
+            ROLE_ADMIN_GROUP_APPLICATION: Tous les droits groupes d'administration
+        Categorie de produit:
+            ROLE_ADMIN_CATEGORIE_PRODUIT_LIST: Liste des catégories de produits
+            ROLE_ADMIN_CATEGORIE_PRODUIT_VIEW: Voir une catégorie de produit
+            ROLE_ADMIN_CATEGORIE_PRODUIT_CREATE: Création d'une catégorie de produit
+            ROLE_ADMIN_CATEGORIE_PRODUIT_EDIT: Modification d'une catégorie de produit
+            ROLE_ADMIN_CATEGORIE_PRODUIT_DELETE: Supprimer une catégorie de produit
+            ROLE_ADMIN_CATEGORIE_PRODUIT_EXPORT: Exporter une catégorie de produit
+            ROLE_ADMIN_CATEGORIE_PRODUIT: Tous les droits catégorie de produit
+        Produit:
+            ROLE_ADMIN_PRODUIT_LIST: Liste des produits
+            ROLE_ADMIN_PRODUIT_VIEW: Voir une catégorie de produit
+            ROLE_ADMIN_PRODUIT_CREATE: Création d'un produit
+            ROLE_ADMIN_PRODUIT_EDIT: Modification d'un produit
+            ROLE_ADMIN_PRODUIT_DELETE: Supprimer un produit
+            ROLE_ADMIN_PRODUIT_EXPORT: Exporter un produit
+            ROLE_ADMIN_PRODUIT: Tous les droits produits
+        Categorie de sport:
+            ROLE_ADMIN_SPORT_LIST: Liste des catégorie de sports
+            ROLE_ADMIN_SPORT_VIEW: Voir une catégorie de sport
+            ROLE_ADMIN_SPORT_CREATE: Création d'une catégorie de sport
+            ROLE_ADMIN_SPORT_EDIT: Modification d'une catégorie de sport
+            ROLE_ADMIN_SPORT_DELETE: Supprimer une catégorie de sport
+            ROLE_ADMIN_SPORT_EXPORT: Exporter une catégorie de sport
+            ROLE_ADMIN_SPORT: Tous les droits catégorie de sport
+        Discutions utilisateurs:
+            ROLE_ADMIN_USER_DISCUSSION_LIST: Liste des discutions utilisateurs
+            ROLE_ADMIN_USER_DISCUSSION_VIEW: Voir une discution utilisateurs
+            ROLE_ADMIN_USER_DISCUSSION_CREATE: Création d'une discution utilisateurs
+            ROLE_ADMIN_USER_DISCUSSION_EDIT: Modification d'une discution utilisateurs
+            ROLE_ADMIN_USER_DISCUSSION_DELETE: Supprimer une discution utilisateurs
+            ROLE_ADMIN_USER_DISCUSSION_EXPORT: Exporter une discution utilisateurs
+            ROLE_ADMIN_USER_DISCUSSION: Tous les droits discutions utilisateurs
+        Messages discutions:
+            ROLE_ADMIN_MESSAGE_LIST: Liste des messages discutions
+            ROLE_ADMIN_MESSAGE_VIEW: Voir un message
+            ROLE_ADMIN_MESSAGE_CREATE: Création d'un message
+            ROLE_ADMIN_MESSAGE_EDIT: Modification d'un message
+            ROLE_ADMIN_MESSAGE_DELETE: Supprimer un message
+            ROLE_ADMIN_MESSAGE_EXPORT: Exporter un message
+            ROLE_ADMIN_MESSAGE: Tous les droits messages discutions
+        Articles :
+            ROLE_ADMIN_POST_LIST: Liste des articles
+            ROLE_ADMIN_POST_VIEW: Voir un article
+            ROLE_ADMIN_POST_CREATE: Création d'un article
+            ROLE_ADMIN_POST_EDIT: Modification d'un article
+            ROLE_ADMIN_POST_DELETE: Supprimer un article
+            ROLE_ADMIN_POST_EXPORT: Exporter un article
+            ROLE_ADMIN_POST: Tous les droits articles
+        Commentaires:
+            ROLE_ADMIN_COMMENT_LIST: Liste des commentaires
+            ROLE_ADMIN_COMMENT_VIEW: Voir un commentaire
+            ROLE_ADMIN_COMMENT_CREATE: Création d'un commentaire
+            ROLE_ADMIN_COMMENT_EDIT: Modification d'un commentaire
+            ROLE_ADMIN_COMMENT_DELETE: Supprimer un commentaire
+            ROLE_ADMIN_COMMENT_EXPORT: Exporter un commentaire
+            ROLE_ADMIN_COMMENT: Tous les droits commentaires
+        Evenements sportifs:
+            ROLE_ADMIN_EVENT_ADMIN_LIST: Liste des évènements sportifs
+            ROLE_ADMIN_EVENT_ADMIN_VIEW: Voir un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_CREATE: Créer un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_EDIT: Modification d'un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_DELETE: Supprimer un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN_EXPORT: Exporter un évènement sportif
+            ROLE_ADMIN_EVENT_ADMIN: Tous les droits évènements sportifs

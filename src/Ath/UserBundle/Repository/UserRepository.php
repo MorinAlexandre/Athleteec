@@ -23,12 +23,31 @@ class UserRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getAssociation($id) {
+    /**
+     * getUserActivesAutocomplete
+     * @param  string $string
+     * @return array of collection of this
+     */
+    public function getUserActivesAutocomplete($string){
+		$query = $this->createQueryBuilder('u')
+	    	->where('u.enabled = :enabled')
+	    	->andWhere('u.nom like :string')
+            ->orderBy('u.nom', 'DESC')
+	    	->setParameters(array(
+	    		'enabled' => 1,
+	    		'string' => '%'. $string .'%'
+	    	))
+	    	->getQuery()
+	    	->getResult();
+
+		return $query;
+	}
+
+    public function getAllExceptMe($user) {
         $query = $this
             ->createQueryBuilder('u')
-            ->where('u.statutJuridique = :statutJuridique and u.id = :id')
-            ->setParameter('statutJuridique', 3)
-            ->setParameter('id', $id)
+            ->where('u.id != :user')
+            ->setParameter('user', $user)
             ->getQuery();
 
         return $query->getResult();
@@ -57,5 +76,132 @@ class UserRepository extends EntityRepository
             ->setParameter('ville', $localisation)
             ->getQuery();
         return count($query);
+    }
+
+    public function getAssociation($id) {
+        $query = $this
+            ->createQueryBuilder('u')
+            ->where('u.statutJuridique = :statutJuridique and u.id = :id')
+            ->setParameter('statutJuridique', 3)
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    /**
+     * getFollowers => retourne les users qui me suivent
+     * 
+     * @param  User $userDestinataire
+     * @return array of collection of this
+     */
+    public function getFollowers($userDestinataire){
+        $query = $this->createQueryBuilder('u')
+            ->Join('u.userEmetteursFollow', 'uef')
+            ->where('uef.userDestinataire = :userDestinataire')
+            ->andWhere('uef.accepte = :accepte')
+            ->addOrderBy('u.prenom', 'ASC')
+            ->addOrderBy('u.nom', 'ASC')
+            ->setParameters(array(
+                'userDestinataire' => $userDestinataire,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    /**
+     * getFollowers => retournes 10 users qui me suivent
+     * 
+     * @param  User $userDestinataire, integer first = premier resultat a recuperer
+     * @return array of collection of this
+     */
+    public function getTenFollowers($userDestinataire, $first = 0){
+        $query = $this->createQueryBuilder('u')
+            ->Join('u.userEmetteursFollow', 'uef')
+            ->where('uef.userDestinataire = :userDestinataire')
+            ->andWhere('uef.accepte = :accepte')
+            ->addOrderBy('u.prenom', 'ASC')
+            ->addOrderBy('u.nom', 'ASC')
+            ->setParameters(array(
+                'userDestinataire' => $userDestinataire,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->setFirstResult($first)
+            ->setMaxResults(10)
+            ->getResult();
+
+        return $query;
+    }
+
+    /**
+     * getFollowers => retourne les 12 derniers followers du user
+     * 
+     * @param  User $userDestinataire
+     * @return array of collection of this
+     */
+    public function getLastFollowers($userDestinataire){
+        $query = $this->createQueryBuilder('u')
+            ->Join('u.userEmetteursFollow', 'uef')
+            ->where('uef.userDestinataire = :userDestinataire')
+            ->andWhere('uef.accepte = :accepte')
+            ->orderBy('uef.updatedAt', 'DESC')
+            ->setParameters(array(
+                'userDestinataire' => $userDestinataire,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->setMaxResults(12)
+            ->getResult();
+
+        return $query;
+    }
+
+    /**
+     * countFollowers => retourne les users qui me suivent
+     * 
+     * @param  User $userDestinataire
+     * @return array of collection of this
+     */
+    public function countFollowers($userDestinataire){
+        $query = $this->createQueryBuilder('u')
+            ->select('COUNT(uef)')
+            ->Join('u.userEmetteursFollow', 'uef')
+            ->where('uef.userDestinataire = :userDestinataire')
+            ->andWhere('uef.accepte = :accepte')
+            ->orderBy('u.nom', 'DESC')
+            ->setParameters(array(
+                'userDestinataire' => $userDestinataire,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $query;
+    }
+
+    /**
+     * getAmiFollows => retourne les personnes que je suis
+     * 
+     * @param  User $userEmetteur
+     * @return array of collection of this
+     */
+    public function getAmiFollows($userEmetteur){
+        $query = $this->createQueryBuilder('u')
+            ->Join('u.userDestinatairesFollow', 'udf')
+            ->where('udf.userEmetteur = :userEmetteur')
+            ->andWhere('udf.accepte = :accepte')
+            ->orderBy('u.nom', 'DESC')
+            ->setParameters(array(
+                'userEmetteur' => $userEmetteur,
+                'accepte' => 1
+            ))
+            ->getQuery()
+            ->getResult();
+
+        return $query;
     }
 }

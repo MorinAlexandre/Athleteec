@@ -10,24 +10,56 @@ use Ath\UserBundle\Form\EditProfileAssocType;
 use Ath\UserBundle\Form\EditProfileType;
 use Ath\MainBundle\Form\Type\DemandeCelebriteFormType;
 use Ath\MainBundle\Entity\DemandeCelebrite;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfileController extends BaseController
 {
      /**
      * Show the user
      */
-    public function showAction()
+   /* public function showAction()
     {
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedException('This user does not have access to this section.');
-        }
+        $em = $this->getDoctrine()->getManager();
+        $userToShow = $em->getRepository('AthUserBundle:User')->findOneBySlug($slug);
+        
+        // if (!is_object($user) || !$user instanceof UserInterface) {
+        //     throw new AccessDeniedException('This user does not have access to this section.');
+        // }
 
         return $this->render('FOSUserBundle:Profile:show.html.twig', array(
-            'user' => $user
+            'user' => $user,
+            'userToShow' => $userToShow
+        ));
+
+    }*/
+
+    public function showProfileAction(Request $request, $slug)
+    {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $userToShow = $em->getRepository('AthUserBundle:User')->findOneBySlug($slug);
+        
+        if(!$userToShow)
+            throw new NotFoundHttpException("Page introuvable");
+
+        // if (!is_object($user) || !$user instanceof UserInterface) {
+        //     throw new AccessDeniedException('This user does not have access to this section.');
+        // }
+        $followers =  $em->getRepository('AthUserBundle:User')->getLastFollowers($userToShow);
+
+        $countFollowers = $em->getRepository('AthUserBundle:User')->countFollowers($userToShow);
+
+        $amiFollows = $em->getRepository('AthUserBundle:User')->getAmiFollows($user);
+        
+        return $this->render('FOSUserBundle:Profile:show.html.twig', array(
+            'user' => $user,
+            'userToShow' => $userToShow,
+            'followers' => $followers,
+            'amiFollows' => $amiFollows,
+            'countFollowers' => $countFollowers
         ));
     }
-
     /**
      * Edit the user
      */
@@ -35,7 +67,7 @@ class ProfileController extends BaseController
     {
         $user = $this->getUser();
 
-        if($user->getStatutJuridiqueId() == 2)
+        if($user->getStatutJuridiqueId() == 3)
             $form = $this->createForm(new EditProfileAssocType(), $user);
         else
             $form = $this->createForm(new EditProfileType(), $user);
@@ -73,9 +105,9 @@ class ProfileController extends BaseController
 
     public function demandeCelebriteAction()
     {
-
+        $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        
+
         if (!$user->canDemandeCelebrite()) {
             return $this->redirect($this->generateUrl('fos_user_profile_edit'));
         }
@@ -85,11 +117,24 @@ class ProfileController extends BaseController
         $form = $this->createForm(new DemandeCelebriteFormType(), $demandeCelebrite);
 
         $formHandler = $this->container->get('ath.form.handler.demande_celebrite');
-
         if($formHandler->process($form))
         {
             $sendMail = $this->container->get('ath_main.services.send_mail');
-            $sendMail->demandeCelebrite($user, $form->getData()->getContenu());
+            $groups = $em->getRepository('AthMainBundle:GroupApplication')->findAll();
+            $aUser = array();
+            foreach ($groups as $group) {
+                foreach ($group->getUsers() as $utilisateur) {
+                    if ($utilisateur != $user && !array_key_exists($utilisateur->getId(), $aUser)) {
+                        if ($utilisateur->hasRole('ROLE_ADMIN_DEMANDE_CELEBRITE')) {
+                            $aUser[$utilisateur->getId()] = $utilisateur;
+                        }
+                    }
+                }
+            }
+            foreach ($aUser as $oneUser) {
+                $sendMail->demandeCelebrite($user,$oneUser, $form->getData()->getContenu());
+            }
+            // $sendMail->demandeCelebrite($user, $form->getData()->getContenu());
             return $this->redirect($this->generateUrl('fos_user_profile_edit'));
         }
 

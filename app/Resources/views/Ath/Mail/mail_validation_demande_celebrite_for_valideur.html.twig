@@ -1,0 +1,36 @@
+{% extends "::Ath/Mail/base.html.twig" %}
+
+{# @see \app\Resources\translations\mail.{$lang}}.yml #}
+{% block body_mail %}
+
+    <table class="scaleForMobile" width="590" border="0" cellpadding="0" cellspacing="0" align="center">
+        <tbody>
+            <tr>
+                <td width="590" height="15" bgcolor="#ffffff" style="line-height:1px;-webkit-text-size-adjust:none;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="590" style="font-size:14px;line-height:135%;color:#31414C;text-align:center;font-weight:bold;font-family:Helvetica Neue, Helvetica, Arial, sans-serif;-webkit-text-size-adjust:none;">
+
+                    <p> Bonjour {{ destinataire }}, </p>
+                    {% if destinataire.id ==  demandeCelebrite.updatedBy.id %}
+                        <p> Vous avez bien validé la demande de célébrité n°{{ demandeCelebrite.id }}.</p>              
+                    {% else %}
+                        <p>La demande de célébrité n°{{ demandeCelebrite.id }} a été validé par {{ demandeCelebrite.updatedBy }}.</p>  
+                    {% endif %}              
+                    <br>
+                    {% set url = "http://" ~ app.request.server.get('SERVER_NAME') ~ path ('admin_ath_main_demandecelebrite_list') %}
+
+                    <p> Voir la liste des demandes de célébrité <a href="{{ url }}">Athleteec</a> </p>
+                </td>
+            </tr>
+            <tr>
+                <td width="590" height="15" style="-webkit-text-size-adjust:none;"></td>
+            </tr>
+        </tbody>
+    </table>
+
+{%  endblock %}
+
+{% block footer_mail %}
+    {{ 'footer' | trans({},'mail') |nl2br }}
+{%  endblock %}

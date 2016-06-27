@@ -7,3 +7,35 @@ ath_list_association:
 ath_page_association:
     path:     /associations/{id}
     defaults: { _controller: AthMainBundle:Association:page }
+
+ath_main_datavis_user:
+    path: /admin/datavis/user
+    defaults: { _controller: AthMainBundle:Datavisualisation:user }
+
+ath_main_search_user:
+    path:     /user/autocomplete
+    defaults: { _controller: AthMainBundle:Default:searchUserAjax }
+
+ath_main_follow_user:
+    path:     /sportif/suivre/{slug}/{suivre}
+    defaults: { _controller: AthMainBundle:Default:follow, suivre: 1 }
+
+ath_main_user_settings:
+    path:     /sportif/parametres
+    defaults: { _controller: AthMainBundle:Default:userSettings }
+
+ath_main_followers:
+    path: /sportif/followers/{slug}
+    defaults: { _controller: AthMainBundle:Default:followers }
+
+ath_main_followers_ajax:
+    path: /sportif/followers/ajax/{slug}
+    defaults: { _controller: AthMainBundle:Default:followersAjax }
+
+ath_main_event_sportifs:
+    path: /sportif/evenements
+    defaults: { _controller: AthMainBundle:Default:eventSportifs }
+
+ath_main_event_sportifs_ajax:
+    path: /sportif/evenements/ajax
+    defaults: { _controller: AthMainBundle:Default:eventSportifsAjax }

@@ -241,6 +241,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Sport", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      * @ORM\JoinTable(name="user_interet_sport")
      */
     private $userInteretSports;
@@ -253,6 +254,7 @@ class User extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Sport", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      * @ORM\JoinTable(name="association_sport")
      */
     private $associationSports;
@@ -269,9 +271,24 @@ class User extends BaseUser
      * @var \Ath\UserBundle\Entity\User
      *
      * @ORM\OneToOne(targetEntity="Ath\MainBundle\Entity\UserSetting", cascade={"all"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_setting_id", referencedColumnName="id")
      */
     private $userSetting;
+
+    /**
+    * @var ArrayCollection GroupApplications
+    * Owning Side
+    *
+    * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\GroupApplication", mappedBy="users")
+    */
+    protected $groupApplications;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
 
     /**
      * @Assert\File(maxSize="6000000")
@@ -286,6 +303,7 @@ class User extends BaseUser
         $this->userInteretSports = new ArrayCollection();
         $this->userComparateurProduits = new ArrayCollection();
         $this->associationSports = new ArrayCollection();
+        $this->groupApplications = new ArrayCollection();
     }
 
     /**
@@ -901,6 +919,11 @@ class User extends BaseUser
       return $this->demandeCelebrites;
     }
 
+    public function setUserInteretSports($userInteretSports) {
+
+          $this->userInteretSports[] = $userInteretSports;
+        return $this;
+    }
     /**
      * Add userInteretSports
      *
@@ -963,6 +986,10 @@ class User extends BaseUser
         return $this->userComparateurProduits;
     }
 
+    public function setAssociationSports($associationSports) {
+          $this->associationSports[] = $associationSports;
+        return $this;
+    }
     /**
      * Add associationSports
      *
@@ -1033,14 +1060,92 @@ class User extends BaseUser
     public function getUserSetting()
     {
         return $this->userSetting;
+    }  
+
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        if ($this->getGroupApplications()) {
+            foreach ($this->getGroupApplications() as $group) {
+                $rolesGroup = $group->getRoles();
+                $arraydiff = array_diff($rolesGroup, $roles);
+                $roles = array_merge($arraydiff, $roles);
+            }
+        }
+
+        return $roles;
     }
 
+    public function getRolesOnly()
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = array();
+
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
+
+        return $this;
+    }
+
+    public function removeRole($role)
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+
+        return $this;
+    }
+
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    public function hasRole($role)
+    {
+        $role = strtoupper($role);
+
+        if (in_array($role, $this->getRoles())) {
+            return true;
+        }
+
+        if (in_array('ROLE_SUPER_ADMIN', $this->getRoles())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the value of groupApplications
+     *
+     * @return ArrayCollection groupApplications
+     */
+    public function getGroupApplications()
+    {
+        return $this->groupApplications;
+    }
     /******* Function pratique **************/
 
     public function getNomComplet() {
         return ucfirst($this->prenom) . ' ' . ucfirst($this->nom);
     }
 	
+    public function getAdresse(){
+        return $this->rue.' '. $this->cp. ' '. $this->ville;
+    }
 	public function getPrefixMail($email) {
 		list($prefix, $suffixe) = explode('@', $email);
 		return $prefix;
@@ -1057,12 +1162,11 @@ class User extends BaseUser
         $demandeCelebrites = $this->getDemandeCelebrites();
         if($this->statutJuridique < 3)
         {
-            if(count($demandeCelebrites) == 0)
-                $ok=true;
-            else // le user a déjà une ou plusieurs demande
+            if(!$this->hasRole("ROLE_CELEBRITE"))
             {
-                if(!$this->hasRole("ROLE_CELEBRITE"))
-                {
+                if(count($demandeCelebrites) == 0)
+                    $ok=true;
+                else {
                     $lastDemande = $demandeCelebrites[0];
                 
                     $dateDemande = $lastDemande->getDateDemande();
@@ -1080,6 +1184,23 @@ class User extends BaseUser
         return $ok;
     }
 
+    /**
+     * Gets the value of slug.
+     *
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
     /********* Fin function pratique **********/
 
     /*** GESTION UPLOADS photo de profile ***/
@@ -1094,7 +1215,7 @@ class User extends BaseUser
     public function getWebPath()
     {
         if ($this->photoId == null) {
-            return '/images/inconnu.jpg';
+            return 'images/inconnu.jpg';
         }
 
         return $this->getUploadDir().'/'.$this->photoId;
@@ -1211,6 +1332,7 @@ class User extends BaseUser
         }
     }
   /**** FIN GESTION UPLOADS ****/
+
 
     public function __toString() {
       return $this->getNomComplet();
