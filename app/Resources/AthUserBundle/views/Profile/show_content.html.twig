@@ -24,16 +24,11 @@
               </div>
               <div class="col-sm-3 col-md-3">
                 <div class="user_information">
-                  <p>
-                    <span class="edited" >Hours rate :</span>
-                    22
-                    <span class="edited" >$</span>
-                  </p>
                   <p class="user_loc">
                     <span class="edited" id="editer_profileglobe">
                       <i class="fa fa-globe"></i>
                     </span>
-                    Redwood city, USA
+                    {{ userToShow.statutJuridique }}
                   </p>
                 </div>
               </div>
@@ -43,9 +38,9 @@
                 	<a href="{{ path('fos_user_profile_edit') }}"><button class="write" style="background-color: #33CCFF;">{{ "modifier.profil" | trans({}, 'home') }}</button></a>
             	{% else %} <!-- ce n'est pas mon profil-->
 	            	{% if userToShow in amiFollows %}
-				        <a href="{{ path('ath_main_follow_user', {'slug': userToShow.slug, 'suivre': 0 }) }}"><button class="write" style="background-color: #33CCFF;">{{ "ne_plus_suivre" | trans({}, 'home') }}</button></a>
+				        <a href="{{ path('ath_main_follow_user', {'slug': userToShow.slug, 'suivre': 0 }) }}"><button class="write unfollow">{{ "ne_plus_suivre" | trans({}, 'home') }}</button></a>
 	            	{% else %} <!-- je ne suis pas cette personne alors je peut la suivre -->
-	            	    <a href="{{ path('ath_main_follow_user', {'slug': userToShow.slug }) }}"><button class="write" style="background-color: #33CCFF;">{{ "suivre" | trans({}, 'home') }}</button></a>
+	            	    <a href="{{ path('ath_main_follow_user', {'slug': userToShow.slug }) }}"><button class="write follow">{{ "suivre" | trans({}, 'home') }}</button></a>
 	            	{% endif %}
             	{% endif %}
               </div>
