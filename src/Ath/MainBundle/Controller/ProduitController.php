@@ -25,7 +25,7 @@ class ProduitController extends Controller
 
         $pagination = array(
             'page' => $page,
-            'route' => 'ath_list_produits',
+            'route' => 'ath_list_produit',
             'pages_count' => ceil($produits_count / 6),
             'route_params' => array()
         );
