@@ -74,6 +74,7 @@ class ProduitAdmin extends Admin
                         'edit' => 'inline',
                         'inline' => 'table'
             ))
+            ->add('categorieProduit', null, array("required" => true))
             ->add('prix')
             ->add('url','text', array('label' => "Lien d'achat"))
         ;
