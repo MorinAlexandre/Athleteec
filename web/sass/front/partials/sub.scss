@@ -31,7 +31,6 @@
     background: $main-color;
     padding: 10px 50px;
     font-size: 25px;
-    box-shadow: 0 3px 0 rgba(0,0,0,.0);
     width: 50%;
     float: none;
     margin-left: 25%;
@@ -39,7 +38,6 @@
     @include transition(box-shadow .1s);
     &:hover{
       background: darken($main-color, 10%);
-      box-shadow: 0 3px 7px rgba(0,0,0,.3);
     }
   }
   span{
@@ -50,6 +48,9 @@
   .btn-info{
     margin-top: 10px;
     background: #444;
+    &:hover{
+      background: darken(#444, 10%);
+    }
   }
 }
 
