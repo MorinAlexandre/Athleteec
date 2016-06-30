@@ -9,6 +9,9 @@
 @import "../../../bower_components/jquery-ui/themes/smoothness/jquery-ui.css";
 @import "../../../bower_components/bootstrap-select/sass/bootstrap-select.scss";
 
+
+@import "param_color";
+
 // Base Theme
 @import "theme/animate";
 @import "theme/bootstrap.min";
@@ -24,3 +27,5 @@
 // Custom Style
 @import "partials/auth";
 @import "partials/practice.scss";
+@import "partials/home.scss";
+@import "partials/user.scss";
