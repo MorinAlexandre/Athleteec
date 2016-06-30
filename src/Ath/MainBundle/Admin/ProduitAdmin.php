@@ -30,6 +30,7 @@ class ProduitAdmin extends Admin
         $datagridMapper
             ->add('id')
             ->add('libelle')
+            ->add('categorieProduit')
         ;
     }
 
@@ -41,6 +42,7 @@ class ProduitAdmin extends Admin
         $listMapper
             ->add('id')
             ->add('fileProduits', 'array', array('label' => "Photo",'template' => '@ath_admin_path/Commun/produit_first_image.html.twig'))
+            ->add('categorieProduit')
             ->add('libelle')
             ->add('description', 'text', array('template' => '@ath_admin_path/Commun/list_sub_string.html.twig'))
             ->add('createdBy',null, array('label' => "Créé par"))
@@ -74,6 +76,7 @@ class ProduitAdmin extends Admin
                         'edit' => 'inline',
                         'inline' => 'table'
             ))
+            ->add('categorieProduit', null, array("required" => true))
             ->add('prix')
             ->add('url','text', array('label' => "Lien d'achat"))
         ;

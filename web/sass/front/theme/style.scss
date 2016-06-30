@@ -8378,3 +8378,36 @@ body.custom-background {
  .bbb-c:hover{
  	box-shadow: 6px 2px 15px #6B6565;
  }
+
+.navbar.navbar-default {
+  z-index: 5;
+}
+
+/** Errors */
+h1.title-error {
+  padding-bottom: 20px;
+  font-size: 28px;
+  margin-bottom: 25px;
+  border-bottom: 4px solid #b3de1d;
+}
+.fond_404 {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../../images/fond_404.png') no-repeat center;
+  background-size: cover;
+}
+.fond_404 .text_404 {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 30px 15px;
+  width: 90%;
+  transform: translateY(-50%);
+  margin: auto;
+  margin-top: 50vh;
+}
+.fond_404 .text_404 a {
+  color: #333;
+}
