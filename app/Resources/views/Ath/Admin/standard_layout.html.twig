@@ -63,7 +63,9 @@ file that was distributed with this source code.
             {% endif %}
             <script type="text/javascript">
             $(document).ready(function($) {
-                
+                $("#searchUser").focus(function() {
+                    $(this).autocomplete('search', $(this).val())
+                });
                 $( "#searchUser" ).autocomplete({
                     source: function( request, response ){
                         $.ajax({

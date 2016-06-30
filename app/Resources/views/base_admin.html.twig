@@ -27,6 +27,9 @@
 
             <script type="text/javascript">
             $(document).ready(function($) {
+                $("#searchUser").focus(function() {
+                    $(this).autocomplete('search', $(this).val())
+                });
                 
                 $( "#searchUser" ).autocomplete({
                     source: function( request, response ){
