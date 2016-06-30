@@ -8378,12 +8378,3 @@ body.custom-background {
  .bbb-c:hover{
  	box-shadow: 6px 2px 15px #6B6565;
  }
-
-/** Errors */
-h1.title-error {
-    padding-bottom: 20px;
-    color:#363b51;
-    font-size: 28px;
-    margin-bottom: 25px;
-    border-bottom: 4px solid #b3de1d;
-}
