@@ -41,16 +41,16 @@ class ProduitController extends Controller
      */
     public function pageAction($id) {
         $em = $this->getDoctrine()->getManager();
-        $association = $em->getRepository('AthUserBundle:User')->getAssociation($id);
+        $produit = $em->getRepository('AthMainBundle:Produit')->getProduit($id);
 
-        if ($association) {
-            $association = $association[0];
+        if ($produit) {
+            $produit = $produit[0];
         }
 
         //$association->getUserFollow();
 
-        return $this->render('@ath_views/Ath/Association/page.html.twig', array(
-            'association' => $association
+        return $this->render('@ath_views/Ath/Produit/page.html.twig', array(
+            'produit' => $produit
         ));
     }
 }
