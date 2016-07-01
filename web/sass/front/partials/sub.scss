@@ -1,4 +1,4 @@
-.fos_user_registration_register{
+.fos_user_registration_register, .request_form{
   h3{
     font-weight: bold;
     text-transform: uppercase;
@@ -10,7 +10,7 @@
 .auth_container{
   height: auto !important;
 }
-.fos_user_registration_register{
+.fos_user_registration_register, .request_form{
   [type="radio"]{
     margin: 0 5px 0 15px;
   }
