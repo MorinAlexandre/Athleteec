@@ -77,17 +77,27 @@ class AssociationController extends Controller
      * @Route("/associations/{id}", name="ath_page_association")
      */
     public function pageAction($id) {
+        $association = $this->getUser();
         $em = $this->getDoctrine()->getManager();
-        $association = $em->getRepository('AthUserBundle:User')->getAssociation($id);
+        $associationToShow = $em->getRepository('AthUserBundle:User')->getAssociation($id);
 
-        if ($association) {
-            $association = $association[0];
+        if ($associationToShow) {
+            $associationToShow = $associationToShow[0];
         }
 
-        //$association->getUserFollow();
+        $followers =  $em->getRepository('AthUserBundle:User')->getLastFollowers($associationToShow);
 
-        return $this->render('@ath_views/Ath/Association/page.html.twig', array(
-            'association' => $association
+        $countFollowers = $em->getRepository('AthUserBundle:User')->countFollowers($associationToShow);
+
+        $amiFollows = $em->getRepository('AthUserBundle:User')->getAmiFollows($association);
+        
+        return $this->render('FOSUserBundle:Profile:show.html.twig', array(
+            'user' => $association,
+            'userToShow' => $associationToShow,
+            'followers' => $followers,
+            'amiFollows' => $amiFollows,
+            'countFollowers' => $countFollowers
         ));
+
     }
 }
