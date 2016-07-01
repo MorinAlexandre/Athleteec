@@ -7,7 +7,9 @@
     margin-bottom: 5px;
   }
 }
-
+.auth_container{
+  height: auto !important;
+}
 .fos_user_registration_register{
   [type="radio"]{
     margin: 0 5px 0 15px;
