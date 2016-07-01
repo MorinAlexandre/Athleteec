@@ -1219,6 +1219,8 @@ class User extends BaseUser
                 return 'images/inconnu.jpg';
             else if($this->getStatutJuridiqueId() == 2)
                 return 'images/femme-inconnu.jpg';
+            else
+                return 'images/inconnu.jpg';
         }
 
         return $this->getUploadDir().'/'.$this->photoId;
