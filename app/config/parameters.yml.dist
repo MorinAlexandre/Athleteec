@@ -6,7 +6,7 @@ parameters:
     database_user: root
     database_password: null
     mailer_transport: smtp
-    mailer_host: 10.100.51.30
+    mailer_host: null
     mailer_user: null
     mailer_password: null
     secret: 45cffe2956acc4fc5ee6636fa273c15f404f8d3e

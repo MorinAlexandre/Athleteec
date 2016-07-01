@@ -69,7 +69,7 @@ class ProduitAdmin extends Admin
             ->add('libelle')
             ->add('description')
             ->add('fileProduits', 'sonata_type_collection', array(
-                'required' => false,
+                'required' => true,
                 'by_reference' => false,
                 'label' => 'Photos'
             ), array(

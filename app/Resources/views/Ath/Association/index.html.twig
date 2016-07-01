@@ -57,12 +57,7 @@
                             <div class="members_item clearfix">
                                 <div class="members_item_img">
 
-                                    {% include '@ath_main_path/Includes/user.html.twig' with {'user': association, 'img_filter' : 'mini' } %}
-                                    <div class="happy_f_block_hover">
-                                        <div class="plus-hover-content">
-                                            <i class="fa fa-plus fa-3x"></i>
-                                        </div>
-                                    </div>
+                                    <img class="" src="/{{ association.webPath  }}" alt="{{ association }}" title="{{ association }}" style="width: 100%;" />
                                 </div>
                                 <div class="member-info">
                                     <p class="member_name">{{ association.nom }}</p>
