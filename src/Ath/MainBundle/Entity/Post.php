@@ -5,6 +5,8 @@ namespace Ath\MainBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Post
@@ -65,6 +67,16 @@ class Post
      * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Comment", mappedBy="post", cascade={"persist", "remove"})
      */
     private $comments;
+
+    /**
+     * @Assert\File(
+     *     maxSize = "5M",
+     *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
+     *     maxSizeMessage = "L'image ne doit dépasser 5MB.",
+     *     mimeTypesMessage = "Seulement les images sont autorisées."
+     * )
+     */
+    public $file;
 
     public function __construct()
     {
@@ -237,5 +249,25 @@ class Post
     public function __toString()
     {
         return (string)$this->id;
+    }
+
+      /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

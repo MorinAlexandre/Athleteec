@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Ath\MainBundle\Entity\UserFollow;
 use Ath\MainBundle\Form\Type\UserSettingFormType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Ath\MainBundle\Form\Type\PostFormType;
+use Ath\MainBundle\Entity\Post;
 
 class DefaultController extends Controller
 {
@@ -24,13 +26,30 @@ class DefaultController extends Controller
         // 10 derniers posts
         $posts = $em->getRepository('AthMainBundle:Post')->getLimitfeed($user,$amis);
 
+        $form = $this->createForm(new PostFormType());
+
         return $this->render('@ath_main_path/index.html.twig', array(
             'events' => $events,
             'countEvents' => $countEvents,
             'posts' => $posts,
-            'amis' => $amis
+            'amis' => $amis,
+            'form' => $form->createView()
 
         ));
+    }
+
+    public function addPostAction(Request $request)
+    {
+        $user = $this->getUser();
+        $post = new Post();
+        $post->setCreatedBy($user);
+
+        $form = $this->createForm(new PostFormType(), $post);
+        $formHandler = $this->container->get('ath.form.post_handler');
+
+        $formHandler->process($form);
+
+        return $this->redirect($this->generateUrl('ath_main_homepage'));
     }
 
     public function postsAjaxAction(Request $request)

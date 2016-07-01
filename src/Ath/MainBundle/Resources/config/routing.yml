@@ -50,3 +50,7 @@ ath_main_event_sportifs_ajax:
 ath_main_posts_ajax:
     path: /sportif/posts/ajax
     defaults: { _controller: AthMainBundle:Default:postsAjax }
+
+ath_main_add_post:
+    path: /sportif/add/post
+    defaults: { _controller: AthMainBundle:Default:addPost }
