@@ -14,11 +14,12 @@ class DatavisualisationController extends Controller
     	$sql = "select * from user";
 		$t = $this->getCollections($sql);
 
-		var_dump($t);
-		die();
+		//var_dump($t);
+		//die();
 
         return $this->render('@ath_admin_path/Datavisualisation/user.html.twig', array(
-        	'var1' => $var1
+        	'var1' => $t,
+			'var2' => "ok ca marche"
         	));
     }
 

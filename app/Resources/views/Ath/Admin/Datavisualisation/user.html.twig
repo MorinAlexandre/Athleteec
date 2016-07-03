@@ -1,21 +1,52 @@
-{% extends '::base_admin.html.twig' %}
 
-{% block scripts_head %}
-{{ parent() }}
-{#  Appel les librairy d3 #}
-<script type="text/javascript" src="{{ asset('components/js/d3.min.js') }}"></script>
+{#  Appel les librairy jqplot #}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/sonata/js/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="/sonata/js/plugins/jqplot.pieRenderer.js"></script>
+<link rel="stylesheet" type="text/css" href="/sonata/js/jquery.jqplot.min.css" />
 
-{% endblock %}
+
+{{ var2 }}
 
 {% block body %}
 <h2>
     Pourcentage homme femme
 </h2>
+  <div id="pie8" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
 ....
 
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-    {# écris ton js et ajax #}
+<script type="text/javascript">
+    $(document).ready(function(){ 
+    var s1 = [['Sony',7], ['Samsumg',13.3], ['LG',14.7], ['Vizio',5.2], ['Insignia', 1.2]];
+         
+    var plot8 = $.jqplot('pie8', [s1], {
+        grid: {
+            drawBorder: false, 
+            drawGridlines: false,
+            background: '#ffffff',
+            shadow:false
+        },
+        axesDefaults: {
+             
+        },
+        seriesDefaults:{
+            renderer:$.jqplot.PieRenderer,
+            rendererOptions: {
+                showDataLabels: true
+            }
+        },
+        legend: {
+            show: true,
+            rendererOptions: {
+                numberRows: 1
+            },
+            location: 's'
+        }
+    }); 
+});
+</script>
+
 {% endblock %}
