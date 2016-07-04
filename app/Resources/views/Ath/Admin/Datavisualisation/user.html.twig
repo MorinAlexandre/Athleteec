@@ -5,24 +5,20 @@
 <script type="text/javascript" src="/sonata/js/plugins/jqplot.pieRenderer.js"></script>
 <link rel="stylesheet" type="text/css" href="/sonata/js/jquery.jqplot.min.css" />
 
-
-{{ var2 }}
-
 {% block body %}
 <h2>
-    Pourcentage homme femme
+    Pourcentage Homme Femme Association
 </h2>
-  <div id="pie8" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
-....
+  <div id="pourcentageHommeFemme" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
 
 {% endblock %}
 
 {% block javascripts %}
 <script type="text/javascript">
     $(document).ready(function(){ 
-    var s1 = [['Sony',7], ['Samsumg',13.3], ['LG',14.7], ['Vizio',5.2], ['Insignia', 1.2]];
+    var s1 = [['Homme', {{ nombreHomme.0.nombre }}], ['Femme', {{ nombreFemme.0.nombre }}], ['Associations', {{ nombreAssociation.0.nombre }}]];
          
-    var plot8 = $.jqplot('pie8', [s1], {
+    var plot8 = $.jqplot('pourcentageHommeFemme', [s1], {
         grid: {
             drawBorder: false, 
             drawGridlines: false,
