@@ -2,14 +2,20 @@
 {#  Appel les librairy jqplot #}
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="/sonata/js/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="/sonata/js/plugins/jqplot.barRenderer.js"></script>
 <script type="text/javascript" src="/sonata/js/plugins/jqplot.pieRenderer.js"></script>
-<link rel="stylesheet" type="text/css" href="/sonata/js/jquery.jqplot.min.css" />
+<script type="text/javascript" src="/sonata/js/plugins/jqplot.categoryAxisRenderer.js"></script>
+<script type="text/javascript" src="/sonata/js/plugins/jqplot.pointLabels.js"></script><link rel="stylesheet" type="text/css" href="/sonata/js/jquery.jqplot.min.css" />
 
 {% block body %}
 <h2>
     Pourcentage Homme Femme Association
 </h2>
   <div id="pourcentageHommeFemme" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
+  <br>
+   <div><span id="info1"></span></div><br>
+  <div id="pourcentage" style="margin-top:20px; margin-left:20px; width:300px; height:300px;"></div>
+  
 
 {% endblock %}
 
@@ -42,6 +48,35 @@
             location: 's'
         }
     }); 
+	
+        var s1 = [{{ homme.moyenne }}, {{ femme.moyenne }}, {{ association.moyenne }}];
+        var s2 = [{{ homme.total }}, {{ femme.total }}, {{ association.total }}];
+        var ticks = ['Homme', 'Femme', 'Association'];
+         
+        plot2 = $.jqplot('pourcentage', [s1, s2], {
+            seriesDefaults: {
+                renderer:$.jqplot.BarRenderer,
+                pointLabels: { show: true }
+            },
+            axes: {
+                xaxis: {
+                    renderer: $.jqplot.CategoryAxisRenderer,
+                    ticks: ticks
+                }
+            }
+        });
+     
+        $('#pourcentage').bind('jqplotDataHighlight', 
+            function (ev, seriesIndex, pointIndex, data) {
+                $('#info1').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
+            }
+        );
+             
+        $('#pourcentage').bind('jqplotDataUnhighlight', 
+            function (ev) {
+                $('#info1').html('Nothing');
+            });
+
 });
 </script>
 

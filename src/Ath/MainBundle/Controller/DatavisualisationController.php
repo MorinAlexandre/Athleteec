@@ -58,7 +58,6 @@ class DatavisualisationController extends Controller
 		$homme["moyenne"] = $homme["total"]/$nombrePostHomme;
 		$femme["moyenne"] = $femme["total"]/$nombrePostFemme;
 		
-		
         return $this->render('@ath_admin_path/Datavisualisation/user.html.twig', array(
         	'nombreFemme' => $nombreFemme,
 			'nombreHomme' => $nombreHomme,
