@@ -31,12 +31,15 @@ class PostFormHandler
                 
             if ($form->isValid()) {
                 $post = $form->getData();
-                $filePost = new FilePost();
-                $filePost->setFile($post->getFile());
-                $filePost->setPost($post);
-              
                 $this->em->persist($post);
-                $this->em->persist($filePost);
+                
+                if ($post->getFile()) {
+                    $filePost = new FilePost();
+                    $filePost->setFile($post->getFile());
+                    $filePost->setPost($post);
+                    $this->em->persist($filePost);
+                }
+                
                 $this->em->flush();
 
                 return true;
