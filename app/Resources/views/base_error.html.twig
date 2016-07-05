@@ -52,37 +52,61 @@
                 $(this).autocomplete('search', $(this).val())
               });
           
-                        $( "#searchUser" ).autocomplete({
-                            source: function( request, response ){
-                                $.ajax({
-                                    url: "{{path('ath_main_search_user')}}",
-                                    data: {
-                                        string: request.term
-                                    },
-                                    beforeSend: function(xhr) {
-                                        // $("#atix_caissebundle_facture_filtre_fkSoc").addClass("loadinggif-for-input");
-                                    },
-                                    success: function( data ) {
-                                        // $("#atix_caissebundle_facture_filtre_fkSoc").removeClass("loadinggif-for-input");
-                                        // console.log(data);
-                                        // response( data.append(data.img) );
-                                        response(data);
-
-                                    }
-                                });
+                $( "#searchUser" ).autocomplete({
+                    source: function( request, response ){
+                        $.ajax({
+                            url: "{{path('ath_main_search_user')}}",
+                            data: {
+                                string: request.term
                             },
-                            create: function () {
-                                $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
-                                    var url = '{{ path("ath_user_show_profile", {"slug": "toto"}) }}';
-                                    url = url.replace("toto", item.slug);
+                            beforeSend: function(xhr) {
+                                // $("#atix_caissebundle_facture_filtre_fkSoc").addClass("loadinggif-for-input");
+                            },
+                            success: function( data ) {
+                                // $("#atix_caissebundle_facture_filtre_fkSoc").removeClass("loadinggif-for-input");
+                                // console.log(data);
+                                // response( data.append(data.img) );
+                                response(data);
 
-                                    return $('<li>')
-                                        .append('<a href='+url+'>' + item.img + ' ' + item.value + '<br>'+ '('+ item.ville+')'+ '</a>')
-                                        .appendTo(ul);
-                                };
-                            }                    
+                            }
                         });
-                    });
+                    },
+                    create: function () {
+                        $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+                            var url = '{{ path("ath_user_show_profile", {"slug": "toto"}) }}';
+                            url = url.replace("toto", item.slug);
+
+                            return $('<li>')
+                                .append('<a href='+url+'>' + item.img + ' ' + item.value + '<br>'+ '('+ item.ville+')'+ '</a>')
+                                .appendTo(ul);
+                        };
+                    }
+                });
+
+                var error_height = $(window).height();
+                $(".fond_404").css({
+                    'height' : error_height + 'px'
+                });
+                $(".fond_403").css({
+                    'height' : error_height + 'px'
+                });
+                $(".fond_500").css({
+                    'height' : error_height + 'px'
+                });
+            });
+
+            $(window).resize(function() {
+                var error_height = $(window).height();
+                $(".fond_404").css({
+                    'height' : error_height + 'px'
+                });
+                $(".fond_403").css({
+                    'height' : error_height + 'px'
+                });
+                $(".fond_500").css({
+                    'height' : error_height + 'px'
+                });
+            });
             </script>
         {% endblock %}
 </body>
