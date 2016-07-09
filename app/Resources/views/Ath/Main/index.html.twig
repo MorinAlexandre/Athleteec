@@ -349,7 +349,7 @@
             .done(function(data) {
               $("#my-loader").hide();
               if (data) {
-                $("#panelComment"+idPost).html(data);
+                $( "div" ).find("#panelComment"+idPost).html(data);
               }
             })
             .fail(function() {
@@ -382,12 +382,14 @@
           .done(function(data) {
             $("#my-loader").hide();
             if (data) {
-              $("#panelComment"+realId).html(data);
+              $( "div" ).find("#panelComment"+realId).html(data);
               // on ne peut voir plus de commentaire => on cache le lien
               var nbToPrint = 10 *sum;
               var firstResult = parseInt(nbComments) - nbToPrint;
               if (firstResult <= 0) {
-                  $("#voirPlus"+realId).hide();
+                $("div").find("#voirPlus"+realId).hide();
+
+                // $("#voirPlus"+realId).hide();
               }
             }
           })
@@ -407,6 +409,7 @@
         $('#dataConfirmModal').modal({show:true});
         return false;
     });
+    // remove onePost
     $("body").delegate("#dataConfirmOK", "click",  function(e) {
         e.preventDefault();
         var idPost = $(this).attr('data-id');
@@ -423,8 +426,8 @@
           .done(function(data) {
             $("#my-loader").hide();
             if (data) {
-              $("#panelComment"+idPost).html(data);
-              $('#panel'+idPost).remove();
+              $("div").find("#panelComment"+idPost).html(data);
+              $("div").find("#panel"+idPost).remove();
             }
           })
           .fail(function() {
