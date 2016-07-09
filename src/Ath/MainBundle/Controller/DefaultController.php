@@ -298,13 +298,56 @@ class DefaultController extends Controller
             if ($first <=0) {
                 $first = 0;
             }
-            
+
             $comments = $em->getRepository('AthMainBundle:Comment')->moreComments($post,$first);
         
             return $this->render('@ath_main_path/Comment/more_comments.html.twig', array(
                 'comments' => $comments,
             ));
         }
+    }
+
+    public function sharePostAction(Request $request,$idPost)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $post = $em->getRepository('AthMainBundle:Post')->find($idPost);
+        if(!$post)
+            throw new NotFoundHttpException("Page introuvable");
+        var_dump($post->getTenLastComments());
+        die();
+        
+        $partage = new Post();
+        $partage->setParent($post);
+        $partage->setCreatedBy($user);
+        $partage->setContenu($post->getContenu());
+        $em->persist($partage);
+        $em->flush();
+
+        $referer = $request->headers->get('referer');
+
+        if($referer != null)
+            return $this->redirect($referer);
+        else
+            return $this->redirect($this->generateUrl('ath_main_homepage'));
+    }
+
+    public function removePostAjaxAction(Request $request)
+    {
+        $ok = false;
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $idPost = $request->get('idPost');
+
+            $post = $em->getRepository('AthMainBundle:Post')->find($idPost);
+            $em->remove($post);
+            $em->flush();
+            
+            $ok = true;
+        }
+        
+        return new JsonResponse($ok);
     }
 
 }

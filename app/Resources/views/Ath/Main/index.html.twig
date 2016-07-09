@@ -86,15 +86,43 @@
             <div class="row">
               <div class="col-sm-12 col-md-12 reviews_list">
                 {% for onePost in posts %}
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" id="panel{{ onePost.id }}" data-id="{{ onePost.id }}">
                        <div class="panel-heading">
-                        <span class="pull-right">
-                          {{ onePost.createdAt |localizeddate('short', "none")}}
-                        </span>
-                        <a href="{{ path('ath_user_show_profile',{'slug': onePost.createdBy.slug }) }}">
-                            <img class="" src="{{ onePost.createdBy.webPath | imagine_filter('mini') }}" alt="{{ onePost.createdBy }}" title="{{ onePost.createdBy }}" />
-                        </a>
+                        <div class="row" style="font-size: 12px">
+                          <div class="col-md-10">
+                            <a href="{{ path('ath_user_show_profile',{'slug': onePost.createdBy.slug }) }}">
+                              <img class="" src="{{ onePost.createdBy.webPath | imagine_filter('micro') }}" alt="{{ onePost.createdBy }}" title="{{ onePost.createdBy }}" />
+                            <i>{{ onePost.createdBy }}</i>
+                            </a>
+                              {% if onePost.getParent() is not null %}
+                              {% set onePostTemp = onePost.getParent() %}
+                              
+                              {% if onePostTemp.createdBy == app.user %}
+                                 à re-publié un article datant du {{ onePostTemp.createdAt |localizeddate('short', "none")}}
+                              {% else %}
+                                 a partagé la publication de <a href="{{ path('ath_user_show_profile',{'slug': onePostTemp.createdBy.slug }) }}">{{ onePostTemp.createdBy }}</a>
+                              {% endif %}
+                            
+                            {% endif %}
+                          </div>
+                          <div class="col-md-2">
+                            {# <span class="pull-right"> #}
+                              {{ onePost.createdAt |localizeddate('short', "none")}}
+                              {% if onePost.createdBy == app.user %}
+                                  <a href="#" class="removePost" data-confirm="Voulez-vous vraiment supprimer cette article?"> Supprimer</a>
+                              {% endif %}
+                            {# </span> #}
+
+                          </div>
+                        </div>
                       </div>
+                      {% set realId = onePost.id %}
+
+                      {# shamble post and parent #}
+                      {% if onePost.getParent() is not null %}
+                          {% set onePost = onePost.getParent() %}
+                      {% endif %}
+                        
                        {% if onePost.filePosts| length > 0 %}
                           <div class="panel-body">
                             <img class="" src="/{{ onePost.filePosts[0].webPath  }}" alt="{{ onePost.filePosts[0] }}" title="{{ onePost.filePosts[0] }}" style="width: 100%;" />
@@ -118,7 +146,7 @@
                                 </a>
                             </div>
                             <div class="col-md-4">
-                              <a href="#" style="" class="seeComment" data-id="seeComment{{onePost.id}}">
+                              <a href="#" style="" class="seeComment" data-id="seeComment{{realId}}">
                                 <i class="fa fa-comments"></i>
                                   {% if onePost.getComments() | length != 0 %}
                                       {{ onePost.getComments() | length}}
@@ -127,12 +155,12 @@
                               </a>
                             </div>
                             <div class="col-md-4">
-                                <a href="#">partager</a>
+                                <a href="{{ path('ath_main_share_post', {'idPost': onePost.id }) }}">partager</a>
                             </div>
                           </div>
                         </div>
-                          <hr>
-                        <div id="seeComment{{onePost.id}}" class="hide-comments">
+                        <hr>
+                        <div id="seeComment{{realId}}" class="hide-comments" data-id="{{ realId }}">
 
                           <div class="row">
                               <div class="panel-body">
@@ -140,9 +168,9 @@
                                   {% include '@ath_main_path/Includes/user.html.twig' with {'user': app.user, 'img_filter' : 'mini' } %}
                                 </div>
                                 <div class="col-md-9">
-                                  <textarea placeholder="Press Enter for send" data-id="{{ onePost.Id }}" class="autoExpand form-control"></textarea>
+                                  <textarea placeholder="{{ "placeholder.comment" | trans({}, 'home') }}" data-id="{{ onePost.Id }}" class="autoExpand form-control"></textarea>
                                   {% if onePost.getComments() | length > 10 %}
-                                      <a href="#" id="voirPlus{{ onePost.Id }}" class="moreComment" data-confirm="{{ onePost.getComments() | length }}" data-label="{{ onePost.Id }}" data-id="1">Voir plus de commentaires</a>
+                                      <a href="#" id="voirPlus{{ realId }}" class="moreComment" data-confirm="{{ onePost.getComments() | length }}" data-label="{{ onePost.Id }}" data-id="1">Voir plus de commentaires</a>
                                   {% endif %}
                                 </div>
                               </div>
@@ -150,7 +178,7 @@
                         <div class="row">
                           
                             {# bouuuu #}
-                            <div id="panelComment{{ onePost.id }}" class="panel-body">
+                            <div id="panelComment{{ realId }}" class="panel-body panelComment">
 
                                 {% for oneComment in onePost.getTenLastComments() %}
                                   {% set auteur = oneComment.createdBy %}
@@ -159,12 +187,12 @@
 
                                       <div class="row">
                                         <div class="col-xs-3 col-sm-2 col-md-2">
-                                          <a href="{{ path('ath_user_show_profile',{'slug': auteur }) }}">
-                                            {% include '@ath_main_path/Includes/user.html.twig' with {'user': auteur, 'img_filter' : 'mini' } %}
+                                          <a href="{{ path('ath_user_show_profile',{'slug': auteur.slug }) }}">
+                                            {% include '@ath_main_path/Includes/user.html.twig' with {'user': auteur, 'img_filter' : 'micro' } %}
                                           </a>
                                         </div>
                                         <div class="col-xs-9 col-sm-3 col-md-3">
-                                          <a href="#" class="us_name">{{auteur}}</a>
+                                          <a href="{{ path('ath_user_show_profile',{'slug': auteur.slug }) }}" class="us_name">{{auteur}}</a>
                                           <p class="us_m_date">{{oneComment.createdAt |localizeddate('short', "none") }}</p>
                                         </div>
                                        {#  <div class="col-xs-8 col-sm-8 col-md-8">
@@ -215,6 +243,25 @@
     </div>
   </div>
   {% include '@ath_main_path/Includes/read_more_modal.html.twig' %}
+  {# Modal confirm suppression post #}
+  <div class="modal fade" id="dataConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+      </div>
+      <div class="modal-body" id="myModalContent" style='color: #000'>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <a class="btn btn-primary" data-id="" id="dataConfirmOK">Valider</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 {% endblock body %}
 
 
@@ -260,7 +307,6 @@
             .fail(function() {
               ok =true;
               // $("#my-loader").hide();
-
               console.log("error");
             })
           }
@@ -268,14 +314,19 @@
       });
 
       $("body").delegate(".seeComment", "click",  function(e) {
-          e.preventDefault();
 
           var selector = $(this).attr('data-id');
+          // console.log(selector);
           if ($('#'+selector).is(":visible") ) {
-              $('#'+selector).hide();
+              $( "div" ).find('#'+selector).hide();
           }
-          else
+          else{
+            // console.log($('#'+selector).length);
+            $( "div" ).find('#'+selector).show();
               $('#'+selector).show();
+          }
+          e.preventDefault();
+
           return false;
       });
     $("body").delegate(".autoExpand", "keydown",  function(e) {
@@ -312,11 +363,12 @@
 
     $("body").delegate(".moreComment", "click",  function(e) {
         e.preventDefault();
-        var load = $(this).attr('data-id');
-        var sum = parseInt(load) + 1;
+        var firstResult = $(this).attr('data-id');
+        var sum = parseInt(firstResult) + 1;
         $(this).attr('data-id', sum);
         var idPost = $(this).attr('data-label');
         var nbComments = $(this).attr('data-confirm');
+        var realId = $(this).closest('.hide-comments').attr('data-id');
 
         $.ajax({
             url: "{{ path('ath_main_more_comments') }}",
@@ -330,13 +382,12 @@
           .done(function(data) {
             $("#my-loader").hide();
             if (data) {
-              $("#panelComment"+idPost).html(data);
+              $("#panelComment"+realId).html(data);
               // on ne peut voir plus de commentaire => on cache le lien
               var nbToPrint = 10 *sum;
-              var first = parseInt(nbComments) - nbToPrint;
-              alert(first);
-              if (first <= 0) {
-                  $("#voirPlus"+idPost).hide();
+              var firstResult = parseInt(nbComments) - nbToPrint;
+              if (firstResult <= 0) {
+                  $("#voirPlus"+realId).hide();
               }
             }
           })
@@ -346,17 +397,41 @@
         return false;
     });
 
-     /* $("body").delegate(".seeComment", "click",  function(e) {
-          e.preventDefault();
-
-          var selector = $(this).attr('data-id');
-          if ($('#'+selector).is(":visible") ) {
-              $('#'+selector).hide();
-          }
-          else
-              $('#'+selector).show();
-          return false;
-      });*/
+    $("body").delegate(".removePost", "click",  function(e) {
+        var href = $(this).attr('href');
+        var idPost = $(this).closest('.panel-default').attr('data-id');
+        console.log(idPost);
+        $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+        // $('#dataConfirmOK').attr('href', href);
+        $('#dataConfirmOK').attr('data-id', idPost);
+        $('#dataConfirmModal').modal({show:true});
+        return false;
+    });
+    $("body").delegate("#dataConfirmOK", "click",  function(e) {
+        e.preventDefault();
+        var idPost = $(this).attr('data-id');
+        $('#dataConfirmModal').modal('hide');
+        $.ajax({
+            url: "{{ path('ath_main_remove_post') }}",
+            type: 'POST',
+            dataType: 'Json',
+            data: {idPost: idPost},
+            beforeSend: function(xhr) {
+              $("#my-loader").show();
+            }
+          })
+          .done(function(data) {
+            $("#my-loader").hide();
+            if (data) {
+              $("#panelComment"+idPost).html(data);
+              $('#panel'+idPost).remove();
+            }
+          })
+          .fail(function() {
+            $("#my-loader").hide();
+          })
+        return false;
+    });
 
   });
 </script>

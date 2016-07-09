@@ -62,3 +62,11 @@ ath_main_add_comment:
 ath_main_more_comments:
     path: /sportif/plus-commentaires
     defaults: { _controller: AthMainBundle:Default:moreCommentsAjax }
+
+ath_main_share_post:
+    path: /sportif/partager/article/{idPost}
+    defaults: { _controller: AthMainBundle:Default:sharePost }
+
+ath_main_remove_post:
+    path: /sportif/supprimer/article
+    defaults: { _controller: AthMainBundle:Default:removePostAjax }

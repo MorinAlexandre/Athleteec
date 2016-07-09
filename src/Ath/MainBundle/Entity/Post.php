@@ -69,6 +69,13 @@ class Post
      */
     private $comments;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Post")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $parent;
+
     /**
      * @Assert\File(
      *     maxSize = "5M",
@@ -77,6 +84,7 @@ class Post
      *     mimeTypesMessage = "Seulement les images sont autorisées."
      * )
      */
+    
     public $file;
 
     public function __construct()
@@ -240,7 +248,7 @@ class Post
         }
         else // on prend les 10 premier commentaires
             $comments = $this->comments;
-
+        
         return $comments;
     }
 
@@ -287,5 +295,28 @@ class Post
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Ath\MainBundle\Entity\Post $parent
+     * @return Post
+     */
+    public function setParent(\Ath\MainBundle\Entity\Post $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \Ath\MainBundle\Entity\Post 
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

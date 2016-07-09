@@ -60,3 +60,4 @@ error.500: Erreur 500
 error.500_message: Une erreur s'est produite
 retour.accueil: Retourner à l'accueil
 Rechercher: Rechercher
+placeholder.comment: Appuyer entrée pour envoyer
