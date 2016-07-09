@@ -10,6 +10,7 @@ use Ath\MainBundle\Form\Type\UserSettingFormType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Ath\MainBundle\Form\Type\PostFormType;
 use Ath\MainBundle\Entity\Post;
+use Ath\MainBundle\Entity\Comment;
 
 class DefaultController extends Controller
 {
@@ -257,6 +258,53 @@ class DefaultController extends Controller
         return $this->render('@ath_main_path/Event/ten_event_sportifs.html.twig', array(
             'events' => $events,
         ));
+    }
+
+    public function addCommentAjaxAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $message = $request->get('message');
+            $idPost = $request->get('idPost');
+            $user = $this->getUser();
+
+            $post = $em->getRepository('AthMainBundle:Post')->find($idPost);
+            
+            $comment = new Comment();
+            $comment->setCreatedBy($user);
+            $comment->setPost($post);
+            $comment->setMessage($message);
+            $em->persist($comment);
+            $em->flush();
+
+            return $this->render('@ath_main_path/Comment/ten_last_comments.html.twig', array(
+                'post' => $post,
+            ));
+        }
+    }
+
+    public function moreCommentsAjaxAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $load = $request->get('load');
+            $idPost = $request->get('idPost');
+            $user = $this->getUser();
+
+            $post = $em->getRepository('AthMainBundle:Post')->find($idPost);
+            $nbComments = count($post->getComments());
+            $nbToPrint = 10*$load;
+            $first = $nbComments - $nbToPrint;
+            if ($first <=0) {
+                $first = 0;
+            }
+            
+            $comments = $em->getRepository('AthMainBundle:Comment')->moreComments($post,$first);
+        
+            return $this->render('@ath_main_path/Comment/more_comments.html.twig', array(
+                'comments' => $comments,
+            ));
+        }
     }
 
 }

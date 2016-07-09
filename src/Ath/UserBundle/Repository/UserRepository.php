@@ -138,7 +138,7 @@ class UserRepository extends EntityRepository
     }
 
     /**
-     * getFollowers => retourne les 12 derniers followers du user
+     * getLastFollowers => retourne les 12 derniers followers du user
      * 
      * @param  User $userDestinataire
      * @return array of collection of this

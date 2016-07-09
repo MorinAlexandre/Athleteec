@@ -54,3 +54,11 @@ ath_main_posts_ajax:
 ath_main_add_post:
     path: /sportif/add/post
     defaults: { _controller: AthMainBundle:Default:addPost }
+
+ath_main_add_comment:
+    path: /sportif/add/comment
+    defaults: { _controller: AthMainBundle:Default:addCommentAjax }
+
+ath_main_more_comments:
+    path: /sportif/plus-commentaires
+    defaults: { _controller: AthMainBundle:Default:moreCommentsAjax }

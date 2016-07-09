@@ -3,8 +3,10 @@
        <div class="panel-heading">
         <span class="pull-right">
           {{ onePost.createdAt |localizeddate('short', "none")}}
-        </span> 
-        <img class="" src="{{ onePost.createdBy.webPath | imagine_filter('mini') }}" alt="{{ onePost.createdBy }}" title="{{ onePost.createdBy }}" />
+        </span>
+        <a href="{{ path('ath_user_show_profile',{'slug': onePost.createdBy.slug }) }}">
+            <img class="" src="{{ onePost.createdBy.webPath | imagine_filter('mini') }}" alt="{{ onePost.createdBy }}" title="{{ onePost.createdBy }}" />
+        </a>
       </div>
        {% if onePost.filePosts| length > 0 %}
           <div class="panel-body">
@@ -17,5 +19,90 @@
           <div class="clearfix"></div>
           {{ onePost.contenu }}
         </div>
-    </div>
+        <hr>
+        <div class="row">
+          <div class="block-action-post">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-3">
+              <a class="happy_like" href="#">
+                <i class="fa fa-thumbs-up"></i>
+                J'aime
+                </a>
+            </div>
+            <div class="col-md-4">
+              <a href="#" style="" class="seeComment" data-id="seeComment{{onePost.id}}">
+                <i class="fa fa-comments"></i>
+                  {% if onePost.getComments() | length != 0 %}
+                      {{ onePost.getComments() | length}}
+                  {% endif %}
+                  Commenter
+              </a>
+            </div>
+            <div class="col-md-4">
+                <a href="#">partager</a>
+            </div>
+          </div>
+        </div>
+          <hr>
+        <div id="seeComment{{onePost.id}}" class="hide-comments">
+
+          <div class="row">
+              <div class="panel-body">
+                <div class="col-md-3">
+                  {% include '@ath_main_path/Includes/user.html.twig' with {'user': app.user, 'img_filter' : 'mini' } %}
+                </div>
+                <div class="col-md-9">
+                  <textarea placeholder="Press Enter for send" data-id="{{ onePost.Id }}" class="autoExpand form-control"></textarea>
+                </div>
+              </div>
+          </div>
+        <div class="row">
+          
+            {# bouuuu #}
+            <div class="panel-body">
+
+                {% for oneComment in onePost.getTenLastComments() %}
+                  {% set auteur = oneComment.createdBy %}
+                    <div class="col-sm-12 col-md-12 reviews_list">
+                    <div class="user_message green_comment ">
+
+                      <div class="row">
+                        <div class="col-xs-3 col-sm-2 col-md-2">
+                          <a href="{{ path('ath_user_show_profile',{'slug': auteur }) }}">
+                            {% include '@ath_main_path/Includes/user.html.twig' with {'user': auteur, 'img_filter' : 'mini' } %}
+                          </a>
+                        </div>
+                        <div class="col-xs-9 col-sm-3 col-md-3">
+                          <a href="#" class="us_name">{{auteur}}</a>
+                          <p class="us_m_date">{{oneComment.createdAt |localizeddate('short', "none") }}</p>
+                        </div>
+                       {#  <div class="col-xs-8 col-sm-8 col-md-8">
+                          <ul class="user_message_options pull-right">
+                            <li>
+                              <a href="?del=2267">
+                                <i class="fa fa-minus-circle"></i>
+                                Delete
+                              </a>
+                            </li>
+                          </ul>
+
+                        </div>
+#}                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                          <div class="us_line"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                          <div class="us_content">
+                            <p>{{ oneComment.getMessage() }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+
+    </div> <!-- panel-default -->
 {% endfor %}

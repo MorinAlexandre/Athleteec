@@ -106,7 +106,95 @@
                           <div class="clearfix"></div>
                           {{ onePost.contenu }}
                         </div>
-                    </div>
+                        <hr>
+                        <div class="row">
+                          <div class="block-action-post">
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-3">
+                              <a class="happy_like" href="#">
+                                <i class="fa fa-thumbs-up"></i>
+                                J'aime
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                              <a href="#" style="" class="seeComment" data-id="seeComment{{onePost.id}}">
+                                <i class="fa fa-comments"></i>
+                                  {% if onePost.getComments() | length != 0 %}
+                                      {{ onePost.getComments() | length}}
+                                  {% endif %}
+                                  Commenter
+                              </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="#">partager</a>
+                            </div>
+                          </div>
+                        </div>
+                          <hr>
+                        <div id="seeComment{{onePost.id}}" class="hide-comments">
+
+                          <div class="row">
+                              <div class="panel-body">
+                                <div class="col-md-3">
+                                  {% include '@ath_main_path/Includes/user.html.twig' with {'user': app.user, 'img_filter' : 'mini' } %}
+                                </div>
+                                <div class="col-md-9">
+                                  <textarea placeholder="Press Enter for send" data-id="{{ onePost.Id }}" class="autoExpand form-control"></textarea>
+                                  {% if onePost.getComments() | length > 10 %}
+                                      <a href="#" id="voirPlus{{ onePost.Id }}" class="moreComment" data-confirm="{{ onePost.getComments() | length }}" data-label="{{ onePost.Id }}" data-id="1">Voir plus de commentaires</a>
+                                  {% endif %}
+                                </div>
+                              </div>
+                          </div>
+                        <div class="row">
+                          
+                            {# bouuuu #}
+                            <div id="panelComment{{ onePost.id }}" class="panel-body">
+
+                                {% for oneComment in onePost.getTenLastComments() %}
+                                  {% set auteur = oneComment.createdBy %}
+                                    <div class="col-sm-12 col-md-12 reviews_list">
+                                    <div class="user_message green_comment ">
+
+                                      <div class="row">
+                                        <div class="col-xs-3 col-sm-2 col-md-2">
+                                          <a href="{{ path('ath_user_show_profile',{'slug': auteur }) }}">
+                                            {% include '@ath_main_path/Includes/user.html.twig' with {'user': auteur, 'img_filter' : 'mini' } %}
+                                          </a>
+                                        </div>
+                                        <div class="col-xs-9 col-sm-3 col-md-3">
+                                          <a href="#" class="us_name">{{auteur}}</a>
+                                          <p class="us_m_date">{{oneComment.createdAt |localizeddate('short', "none") }}</p>
+                                        </div>
+                                       {#  <div class="col-xs-8 col-sm-8 col-md-8">
+                                          <ul class="user_message_options pull-right">
+                                            <li>
+                                              <a href="?del=2267">
+                                                <i class="fa fa-minus-circle"></i>
+                                                Delete
+                                              </a>
+                                            </li>
+                                          </ul>
+
+                                        </div>
+ #}                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                          <div class="us_line"></div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                          <div class="us_content">
+                                            <p>{{ oneComment.getMessage() }}</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+
+                    </div> <!-- panel-default -->
                 {% endfor %}
 
             <div id="my-loader"></div>
@@ -178,6 +266,98 @@
           }
         }
       });
+
+      $("body").delegate(".seeComment", "click",  function(e) {
+          e.preventDefault();
+
+          var selector = $(this).attr('data-id');
+          if ($('#'+selector).is(":visible") ) {
+              $('#'+selector).hide();
+          }
+          else
+              $('#'+selector).show();
+          return false;
+      });
+    $("body").delegate(".autoExpand", "keydown",  function(e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        var message = $(this).val();
+        var idPost = $(this).attr('data-id');
+
+        if ($.trim(message) != "") 
+        {
+            $.ajax({
+              url: "{{ path('ath_main_add_comment') }}",
+              type: 'POST',
+              dataType: 'html',
+              data: {message: message, idPost: idPost},
+              beforeSend: function(xhr) {
+                $("#my-loader").show();
+              }
+            })
+            .done(function(data) {
+              $("#my-loader").hide();
+              if (data) {
+                $("#panelComment"+idPost).html(data);
+              }
+            })
+            .fail(function() {
+              $("#my-loader").hide();
+            })
+        }
+          
+          return false;
+      }
+    });
+
+    $("body").delegate(".moreComment", "click",  function(e) {
+        e.preventDefault();
+        var load = $(this).attr('data-id');
+        var sum = parseInt(load) + 1;
+        $(this).attr('data-id', sum);
+        var idPost = $(this).attr('data-label');
+        var nbComments = $(this).attr('data-confirm');
+
+        $.ajax({
+            url: "{{ path('ath_main_more_comments') }}",
+            type: 'POST',
+            dataType: 'html',
+            data: {load: sum, idPost: idPost},
+            beforeSend: function(xhr) {
+              $("#my-loader").show();
+            }
+          })
+          .done(function(data) {
+            $("#my-loader").hide();
+            if (data) {
+              $("#panelComment"+idPost).html(data);
+              // on ne peut voir plus de commentaire => on cache le lien
+              var nbToPrint = 10 *sum;
+              var first = parseInt(nbComments) - nbToPrint;
+              alert(first);
+              if (first <= 0) {
+                  $("#voirPlus"+idPost).hide();
+              }
+            }
+          })
+          .fail(function() {
+            $("#my-loader").hide();
+          })
+        return false;
+    });
+
+     /* $("body").delegate(".seeComment", "click",  function(e) {
+          e.preventDefault();
+
+          var selector = $(this).attr('data-id');
+          if ($('#'+selector).is(":visible") ) {
+              $('#'+selector).hide();
+          }
+          else
+              $('#'+selector).show();
+          return false;
+      });*/
+
   });
 </script>
 {% endblock %}

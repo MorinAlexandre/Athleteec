@@ -64,6 +64,7 @@ class Post
     private $filePosts;
 
     /**
+     * @ORM\OrderBy({"createdAt" = "ASC"})
      * @ORM\OneToMany(targetEntity="Ath\MainBundle\Entity\Comment", mappedBy="post", cascade={"persist", "remove"})
      */
     private $comments;
@@ -226,6 +227,23 @@ class Post
       return $this->comments;
     }
     
+    public function getTenLastComments()
+    {
+        $comments = new ArrayCollection();
+
+        $nb = count($this->comments);
+        $first = $nb - 10;
+        if ($nb >10) {
+            for ($i=$first; $i < $nb ; $i++) { 
+                $comments[] = $this->comments[$i];
+            }
+        }
+        else // on prend les 10 premier commentaires
+            $comments = $this->comments;
+
+        return $comments;
+    }
+
     public function removeComment(\Ath\MainBundle\Entity\Comment $comment)
     {
       $this->comments->removeElement($comment);
