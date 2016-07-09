@@ -317,13 +317,18 @@
 
           var selector = $(this).attr('data-id');
           // console.log(selector);
-          if ($('#'+selector).is(":visible") ) {
+          if ($( "div" ).find('#'+selector).is(":visible") ) {
               $( "div" ).find('#'+selector).hide();
+              $('#'+selector).hide();
+            // console.log($('#'+selector).length);
+
           }
           else{
+            // console.log("hide");
+
             // console.log($('#'+selector).length);
             $( "div" ).find('#'+selector).show();
-              $('#'+selector).show();
+              // $('#'+selector).show();
           }
           e.preventDefault();
 

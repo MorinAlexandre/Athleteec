@@ -66,10 +66,18 @@ class DefaultController extends Controller
 
             // 10 posts suivant
             $posts = $em->getRepository('AthMainBundle:Post')->getTenPosts($user,$amis,$firstResult);
-
+            $tabComments = array();
+            foreach ($posts as $onePost) {
+                if ($onePost->getParent() != null) {
+                    $onePost = $onePost->getParent();
+                }
+                $tabComments[$onePost->getId()] = $onePost->getTenLastComments();
+            }
+            
             return $this->render('@ath_main_path/Post/ten_posts.html.twig', array(
                 // 'amis' => $amis,
-                'posts' => $posts
+                'posts' => $posts,
+                'tabComments' => $tabComments
 
             ));
 
@@ -292,6 +300,7 @@ class DefaultController extends Controller
             $user = $this->getUser();
 
             $post = $em->getRepository('AthMainBundle:Post')->find($idPost);
+
             $nbComments = count($post->getComments());
             $nbToPrint = 10*$load;
             $first = $nbComments - $nbToPrint;
@@ -315,9 +324,7 @@ class DefaultController extends Controller
         $post = $em->getRepository('AthMainBundle:Post')->find($idPost);
         if(!$post)
             throw new NotFoundHttpException("Page introuvable");
-        var_dump($post->getTenLastComments());
-        die();
-        
+
         $partage = new Post();
         $partage->setParent($post);
         $partage->setCreatedBy($user);

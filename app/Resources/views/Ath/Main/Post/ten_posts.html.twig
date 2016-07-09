@@ -92,8 +92,8 @@
           
             {# bouuuu #}
             <div id="panelComment{{ realId }}" class="panel-body panelComment">
-
-                {% for oneComment in onePost.getTenLastComments() %}
+                {# {{ dump(tabComments[onePost.id] | length)}} #}
+                {% for oneComment in tabComments[onePost.id] %}
                   {% set auteur = oneComment.createdBy %}
                     <div class="col-sm-12 col-md-12 reviews_list">
                     <div class="user_message green_comment ">
