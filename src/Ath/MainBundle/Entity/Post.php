@@ -77,6 +77,15 @@ class Post
     private $parent;
 
     /**
+    * @var ArrayCollection User
+    * Inverse Side
+    *
+    * @ORM\ManyToMany(targetEntity="Ath\UserBundle\Entity\User", inversedBy="postLikes")
+    * @ORM\JoinTable(name="user_like_post")
+    */
+    private $userLikes;
+
+    /**
      * @Assert\File(
      *     maxSize = "5M",
      *     mimeTypes = {"image/jpeg", "image/gif", "image/png", "image/tiff"},
@@ -84,13 +93,13 @@ class Post
      *     mimeTypesMessage = "Seulement les images sont autorisées."
      * )
      */
-    
     public $file;
 
     public function __construct()
     {
         $this->filePosts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->userLikes = new ArrayCollection();
     }
 
     /**
@@ -318,5 +327,40 @@ class Post
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Add userLikes
+     *
+     * @param \Ath\UserBundle\Entity\User $userLike
+     * @return Post
+     */
+    public function addUserLike(\Ath\UserBundle\Entity\User $userLike)
+    {
+        if (!$this->userLikes->contains($userLike)) {
+            $this->userLikes[] = $userLike;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove userLikes
+     *
+     * @param \Ath\UserBundle\Entity\User $userLike
+     */
+    public function removeUserLike(\Ath\UserBundle\Entity\User $userLike)
+    {
+        $this->userLikes->removeElement($userLike);
+    }
+
+    /**
+     * Get userLikes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserLikes()
+    {
+        return $this->userLikes;
     }
 }

@@ -281,7 +281,7 @@ class User extends BaseUser
     *
     * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\GroupApplication", mappedBy="users")
     */
-    protected $groupApplications;
+    private $groupApplications;
 
     /**
      * @var string
@@ -289,6 +289,14 @@ class User extends BaseUser
      * @ORM\Column(name="slug", type="string", length=255)
      */
     private $slug;
+
+    /**
+    * @var ArrayCollection Post
+    * Owning Side
+    *
+    * @ORM\ManyToMany(targetEntity="Ath\MainBundle\Entity\Post", mappedBy="userLikes")
+    */
+    private $postLikes;
 
     /**
      * @Assert\File(maxSize="6000000")
@@ -304,6 +312,8 @@ class User extends BaseUser
         $this->userComparateurProduits = new ArrayCollection();
         $this->associationSports = new ArrayCollection();
         $this->groupApplications = new ArrayCollection();
+        $this->postLikes = new ArrayCollection();
+
     }
 
     /**
@@ -1019,6 +1029,37 @@ class User extends BaseUser
     */
     public function getAssociationSports() {
         return $this->associationSports;
+    }
+
+    /**
+     * Add postLikes
+     *
+     * @param \Ath\MainBundle\Entity\Post $post
+     * @return User
+     */
+    public function addPostLikes(\Ath\MainBundle\Entity\Post $post) {
+        if (!$this->postLikes->contains($post)) {
+            $this->postLikes[] = $post;
+        }
+        return $this;
+    }
+
+    /**
+     * Remove postLikes
+     *
+     * @param \Ath\MainBundle\Entity\Post $post
+     */
+    public function removePostLike(\Ath\MainBundle\Entity\Post $post) {
+        $this->postLikes->removeElement($post);
+    }
+
+   /**
+    * Get postLikes
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+    public function getPostLikes() {
+        return $this->postLikes;
     }
 
     public function getProduits()
