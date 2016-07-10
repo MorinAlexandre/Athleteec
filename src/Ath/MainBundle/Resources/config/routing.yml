@@ -70,3 +70,7 @@ ath_main_share_post:
 ath_main_remove_post:
     path: /sportif/supprimer/article
     defaults: { _controller: AthMainBundle:Default:removePostAjax }
+
+ath_main_like_post:
+    path: /sportif/aimer/article
+    defaults: { _controller: AthMainBundle:Default:likePostAjax }

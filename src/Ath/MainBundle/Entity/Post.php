@@ -363,4 +363,30 @@ class Post
     {
         return $this->userLikes;
     }
+
+    /**
+     * clickLike
+     * add or remove a userlike
+     * @param \Ath\UserBundle\Entity\Post $user, bool $remove
+     * @return Void
+     */
+    public function clickLike(\Ath\UserBundle\Entity\User $user, $remove) {
+        if ($remove == 'true') {
+            $this->removeUserLike($user);
+        }
+        else{
+            $this->addUserLike($user);
+        }
+
+        // return $ok;
+    }
+
+    public function hasUserLike($user)
+    {   
+        if ($this->userLikes->contains($user)) {
+            return true;
+        }
+
+        return false;
+    }
 }

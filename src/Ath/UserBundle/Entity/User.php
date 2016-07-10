@@ -1062,6 +1062,30 @@ class User extends BaseUser
         return $this->postLikes;
     }
 
+    public function hasPostLike($post)
+    {   
+        if ($this->postLikes->contains($post)) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    /**
+     * clickLike
+     * add or remove a post
+     * @param \Ath\MainBundle\Entity\Post $post, bool $remove
+     * @return Void
+     */
+    public function clickLike(\Ath\MainBundle\Entity\Post $post, $remove) {
+        if ($remove) {
+            $this->removePostLike($post);
+        }
+        else
+            $this->addPostLike($post);
+
+        // return $ok;
+    }
     public function getProduits()
     {
       return $this->produits;

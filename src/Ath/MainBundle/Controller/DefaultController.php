@@ -66,18 +66,18 @@ class DefaultController extends Controller
 
             // 10 posts suivant
             $posts = $em->getRepository('AthMainBundle:Post')->getTenPosts($user,$amis,$firstResult);
-            $tabComments = array();
+            /*$tabComments = array();
             foreach ($posts as $onePost) {
                 if ($onePost->getParent() != null) {
                     $onePost = $onePost->getParent();
                 }
                 $tabComments[$onePost->getId()] = $onePost->getTenLastComments();
-            }
-            
+            }*/
+
             return $this->render('@ath_main_path/Post/ten_posts.html.twig', array(
                 // 'amis' => $amis,
                 'posts' => $posts,
-                'tabComments' => $tabComments
+                // 'tabComments' => $tabComments
 
             ));
 
@@ -357,4 +357,33 @@ class DefaultController extends Controller
         return new JsonResponse($ok);
     }
 
+    public function likePostAjaxAction(Request $request)
+    {
+        $ok = false;
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+
+            $idPost = $request->get('idPost');
+            $realId = $request->get('realId');
+            $remove = $request->get('remove');
+
+            $onePost = $em->getRepository('AthMainBundle:Post')->find($idPost);
+            // add or remove a like
+            $onePost->clickLike($user,$remove);
+            if ($remove == 'false') {
+                $em->persist($onePost);
+            }
+            $em->flush();
+            /*var_dump($remove,count($onePost->getUserLikes()));
+            die();*/
+
+            return $this->render('@ath_main_path/Post/like_post.html.twig', array(
+                'onePost' => $onePost,
+                'realId' => $realId
+            ));
+        }
+        
+        return new JsonResponse($ok);
+    }
 }

@@ -84,7 +84,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-12 col-md-12 reviews_list">
+              <div id="reviews_list" class="col-sm-12 col-md-12 reviews_list">
                 {% for onePost in posts %}
                     <div class="panel panel-default" id="panel{{ onePost.id }}" data-id="{{ onePost.id }}">
                        <div class="panel-heading">
@@ -140,8 +140,13 @@
                             <div class="col-md-1">
                             </div>
                             <div class="col-md-3">
-                              <a class="happy_like" href="#">
+                              <a class="happy_like {% if onePost.hasUserLike(app.user) %}already-like{% endif %}" href="#" data-id="{{ onePost.userLikes | length }}" data-label="{{ onePost.id }}">
                                 <i class="fa fa-thumbs-up"></i>
+                                <span id="nbLikes{{ realId }}">
+                                  {% if onePost.userLikes | length > 0 %}
+                                    {{ onePost.userLikes | length }}
+                                  {% endif %}
+                                </span>
                                 J'aime
                                 </a>
                             </div>
@@ -182,7 +187,7 @@
 
                                 {% for oneComment in onePost.getTenLastComments() %}
                                   {% set auteur = oneComment.createdBy %}
-                                    <div class="col-sm-12 col-md-12 reviews_list">
+                                    <div class="col-sm-12 col-md-12">
                                     <div class="user_message green_comment ">
 
                                       <div class="row">
@@ -294,7 +299,7 @@
               ok = true;
               // $("#my-loader").hide();
               if (data) {
-                $('.reviews_list').append(data);
+                $('#reviews_list').append(data);
               }
               else{
 
@@ -405,11 +410,9 @@
     });
 
     $("body").delegate(".removePost", "click",  function(e) {
-        var href = $(this).attr('href');
         var idPost = $(this).closest('.panel-default').attr('data-id');
-        console.log(idPost);
+        // console.log(idPost);
         $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
-        // $('#dataConfirmOK').attr('href', href);
         $('#dataConfirmOK').attr('data-id', idPost);
         $('#dataConfirmModal').modal({show:true});
         return false;
@@ -438,6 +441,50 @@
           .fail(function() {
             $("#my-loader").hide();
           })
+        return false;
+    });
+
+    $("body").delegate(".happy_like", "click",  function(e) {
+        var realId = $(this).closest('.panel-default').attr('data-id');
+
+        var substract = $(this).hasClass('already-like');
+        var nbLikes = parseInt($(this).attr('data-id'));
+        var idPost = $(this).attr('data-label');
+        if (substract) {
+          $(this).attr('data-id', nbLikes - 1);
+          $(this).removeClass('already-like');
+        }
+        else // on incrémente le j'aime' et on ajoute la class already-like
+        {
+          $(this).attr('data-id', nbLikes + 1);
+          $(this).addClass('already-like');
+        }
+        
+        nbLikes = $(this).attr('data-id');
+
+        if (nbLikes != "0") {
+            $("div").find("#nbLikes"+realId).html(nbLikes);
+        }
+        else
+            $("div").find("#nbLikes"+realId).html("");
+
+        // ajax en cache
+        $.ajax({
+            url: "{{ path('ath_main_like_post') }}",
+            type: 'POST',
+            dataType: 'html',
+            data: {idPost: idPost, realId: realId, remove: substract},
+          })
+          .done(function(data) {
+            if (data) {
+              // $("div #panel"+realId).find(".happy_like").html(data);
+            }
+          })
+          .fail(function() {
+            alert("Une erreur est survenue");
+          })
+
+        e.preventDefault();
         return false;
     });
 
