@@ -49,8 +49,12 @@ class DefaultController extends Controller
         $formHandler = $this->container->get('ath.form.post_handler');
 
         $formHandler->process($form);
+        $referer = $request->headers->get('referer');
 
-        return $this->redirect($this->generateUrl('ath_main_homepage'));
+        if($referer != null)
+            return $this->redirect($referer);
+        else
+            return $this->redirect($this->generateUrl('ath_main_homepage'));
     }
 
     public function postsAjaxAction(Request $request)

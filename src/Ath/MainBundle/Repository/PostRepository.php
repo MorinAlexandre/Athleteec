@@ -41,6 +41,27 @@ class PostRepository extends EntityRepository
     }
 
     /**
+     * getMyLimitfeed => retourne les 10 derniers posts du plus récent au plus ancien d'un utilisateur
+     * 
+     * @param  User $user
+     * @return array of collection of this
+     */
+    public function getMyLimitfeed($user){
+
+        $query = $this->createQueryBuilder('p')
+            // ->Join('p.createdBy', 'u')
+            ->where('p.createdBy = :user')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setParameters(array(
+                'user' => $user,
+            ))
+            ->getQuery()
+            ->setMaxResults(10)
+            ->getResult();
+
+        return $query;
+    }
+    /**
      * getTenPosts => retourne 10 posts que j'ai créé et des personnes que je suis du plus récent au plus ancien enfonction de la limit $first
      * 
      * @param  User $user, ArrayCollection of User $amis, Integer $first
@@ -68,4 +89,27 @@ class PostRepository extends EntityRepository
 
         return $query;
     }
+
+    /**
+     * getMyTenPosts => retourne 10 posts que j'ai créé du plus récent au plus ancien en fonction de la limit $first
+     * 
+     * @param  User $user, ArrayCollection of User Integer $first
+     * @return array of collection of this
+     */
+    public function getMyTenPosts($user, $first = 0){
+
+        $query = $this->createQueryBuilder('p')
+            ->where('p.createdBy = :user')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setParameters(array(
+                'user' => $user,
+            ))
+            ->getQuery()
+            ->setFirstResult($first)
+            ->setMaxResults(10)
+            ->getResult();
+
+        return $query;
+    }
+
 }
