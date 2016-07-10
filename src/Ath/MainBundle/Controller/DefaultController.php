@@ -95,7 +95,9 @@ class DefaultController extends Controller
         if ($request->isXmlHttpRequest()) {
         	
             $users = $em->getRepository('AthUserBundle:User')->getUserActivesAutocomplete($request->query->get('string'));
-
+            if (!$users) {
+                return new JsonResponse("ko");
+            }
             return new JsonResponse(
                 array_map(
                     function ($val) {

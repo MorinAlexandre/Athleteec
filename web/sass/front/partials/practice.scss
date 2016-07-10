@@ -26,8 +26,8 @@
   z-index: 1000;
   float: left;
   display: none;
-  min-width: 160px;
-  _width: 400px;
+  min-width: 200px;
+  _width: 500px;
   padding: 4px 0;
   margin: 2px 0 0 0;
   list-style: none;
@@ -175,4 +175,11 @@
 
 .already-like{
   color: #2196f3 !important;
+}
+
+.loadinggif-for-input
+{
+  background-image:url('/images/ajax-loader.gif');
+    background-repeat:no-repeat;
+    background-position: right;
 }
