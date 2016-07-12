@@ -8,7 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Security\Core\Validator\Constraint\UserPassword as OldUserPassword;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
-class ChangePasswordFormType extends AbstractType
+// distinct de fos user correspond à celui du bo
+class MyChangePasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
