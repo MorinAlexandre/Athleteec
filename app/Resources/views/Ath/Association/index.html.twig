@@ -41,7 +41,7 @@
                 </div>
             </div>-->
     </div>
-    <form class="" action="{{ path('ath_list_association') }}" method="POST">
+    <form action="{{ path('ath_list_association') }}" method="POST" class="search_container">
         {{ form_row(form._token) }}
         {{ form_row(form.sports) }}
         <input type="submit" value="Trier" class="btn btn-default" />

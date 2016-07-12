@@ -2063,13 +2063,14 @@ footer .footer_list li a:hover
 	content: "";
 	width: 0;
 	top: -1px;
-	right: -65px;
+	right: -89px;
 	position: absolute;
 	height: 0;
-	border-top: 33px solid transparent;
-	border-right: 33px solid transparent;
-	border-left: 33px solid #f3f3f3;
-	border-bottom: 33px solid transparent;
+	border-top: 45px solid transparent;
+	border-right: 45px solid transparent;
+	border-left: 45px solid #f3f3f3;
+	border-bottom: 45px solid transparent;
+	border-bottom: 45px solid transparent;
 }
 .users_friends{
 	position: relative;
@@ -6006,9 +6007,12 @@ ul.files li a{color:black!important;}
 }
 .feature_name{
 	float:left;
+    font-weight: bold;
+    width: 48%;
 }
 .feature_value{
 	float:right;
+    width: 48%;
 }
 .heading-block-href .edited{
 	font-size: inherit;
@@ -8427,4 +8431,26 @@ h1.title-error {
 .fond_403 .text_403 a,
 .fond_500 .text_500 a {
   color: #333;
+}
+
+/** PROFILE **/
+.user_head {
+  position: relative;
+}
+.user_head .col-sm-2 {
+  right: 0;
+  position: absolute;
+  margin: 0;
+  padding-right: 0;
+}
+.user_head .write {
+  background-color: #33CCFF;
+}
+.user_head .write:hover {
+  background-color: #b3de1d !important;
+  color: white;
+  border: 2px solid white;
+}
+.user_status {
+  width: 101%;
 }

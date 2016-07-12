@@ -333,8 +333,7 @@
 		left: -31px;
 	}
 	.user_photo_container:after {
-
-		right: -62px;
+		right: -85px;
 	}
 	.users_friends .gradient_bg {
 		height: 115px;
@@ -377,13 +376,13 @@
 		content: "";
 		width: 0;
 		top: 0px;
-		right: -62px!important;
+		right: -89px!important;
 		position: absolute;
 		height: 0;
-		border-top: 31px solid transparent;
-		border-right: 31px solid transparent;
-		border-left: 31px solid #f3f3f3;
-		border-bottom: 31px solid transparent;
+		border-top: 45px solid transparent;
+		border-right: 45px solid transparent;
+		border-left: 45px solid #f3f3f3;
+		border-bottom: 45px solid transparent;
 	}
 	.user_head .write{
 		margin-bottom: 0!important;
@@ -1313,7 +1312,7 @@
 		top: -37px;
 	}
 	.user_photo_container:after {
-		right: -62px;
+		right: -89px;
 	}
 	.user_photo_container{
 		position: relative;
