@@ -26,7 +26,7 @@ jsFrontFiles = [
     appDir + '/bower_components/bootstrap-select/dist/js/bootstrap-select.js',
     appDir + '/bower_components/jquery-debounce/jquery.debounce.js',
     appDir + '/bower_components/bootstrap/js/*.js',
-    jsDir + '/front/**/*.js'
+    jsDir + '/front/*.js'
 ];
 
 jsBackFiles = [
