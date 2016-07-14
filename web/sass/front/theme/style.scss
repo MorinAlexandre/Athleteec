@@ -1657,6 +1657,8 @@ footer .footer_list li a:hover
 	float: left;
 	margin-right: 30px;
 	vertical-align: middle;
+    border-radius: 3px;
+    height: 78px;
 }
 .members_inline .member_name,
 .members_inline .member_year,
@@ -4606,6 +4608,10 @@ header .navigate > li > a:hover{
 }
 .open_item_container h1{
 	margin-bottom: 35px;
+    font-size: 60px;
+    margin-top: 100px;
+    font-weight: bold;
+    color: #212339;
 }
 .beats_circle {
 	width: 160px;
@@ -8517,4 +8523,19 @@ h1.title-error {
   width: 100%;
   font-size: 18px;
   padding: 11px 12px;
+}
+
+
+
+.btn.btn-success.btn-outline:hover {
+  color: #272a4f !important;
+}
+
+.open_items_block button.btn-view_full {
+  border: 2px solid #272a4f;
+  color: #272a4f;
+  background: #fff;
+  font-size: 15px;
+  margin-top: 28px;
+  padding: 13px 20px
 }
