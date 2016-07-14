@@ -245,8 +245,7 @@
         //best apps slider
     
     
-            // if(typeof myowlCarousel == "function") {
-                alert('ok');
+            if(typeof myowlCarousel == "function") {
                 $("#owl-demo5").owlCarousel({
 
                 // Most important owl features
@@ -261,7 +260,7 @@
                 itemsScaleUp : false  ,
                 pagination:false
             });
-        // }       
+        }       
         if(typeof myowlCarousel == "function") {      
 
           $("#owl-demo").owlCarousel({

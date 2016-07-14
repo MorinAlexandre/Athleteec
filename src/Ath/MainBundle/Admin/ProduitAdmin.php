@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Validator\ErrorElement;
 
 class ProduitAdmin extends Admin
 {
@@ -71,6 +72,7 @@ class ProduitAdmin extends Admin
             ->add('fileProduits', 'sonata_type_collection', array(
                 'required' => true,
                 'by_reference' => false,
+                'cascade_validation' => true,
                 'label' => 'Photos'
             ), array(
                         'edit' => 'inline',
@@ -142,4 +144,11 @@ class ProduitAdmin extends Admin
         }
         return $object;
     }
+
+    public function validate(ErrorElement $errorElement, $object)
+    {
+        $errorElement
+            ->assertCallback(array('postControl'))
+        ;
+    }    
 }
