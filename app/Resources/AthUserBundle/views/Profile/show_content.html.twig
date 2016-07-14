@@ -711,6 +711,11 @@
           // itemsDesktopSmall : [979,3]
    
         });
+
+      $('input[type="file"]').change(function() {
+          var val = ($(this).val() != "") ? "Fichier choisi : " + $(this).val() : "Choisir un fichier";
+          $('.actu_value').html(val);
+      });
   });
 </script>
 {% endblock %}
