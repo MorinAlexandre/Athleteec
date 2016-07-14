@@ -109,7 +109,7 @@
                             {# <span class="pull-right"> #}
                               {{ onePost.createdAt |localizeddate('short', "none")}}
                               {% if onePost.createdBy == app.user %}
-                                  <a href="#" class="removePost" data-confirm="Voulez-vous vraiment supprimer cette article?"> Supprimer</a>
+                                  <a href="#" class="removePost" data-confirm="Voulez-vous vraiment supprimer cette article?"><i class="fa fa-trash-o" aria-hidden="true"></i> Supprimer</a>
                               {% endif %}
                             {# </span> #}
 
@@ -160,7 +160,7 @@
                               </a>
                             </div>
                             <div class="col-md-4">
-                                <a href="{{ path('ath_main_share_post', {'idPost': onePost.id }) }}">partager</a>
+                                <a href="{{ path('ath_main_share_post', {'idPost': onePost.id }) }}"><i class="fa fa-share-alt" aria-hidden="true"></i> partager</a>
                             </div>
                           </div>
                         </div>
