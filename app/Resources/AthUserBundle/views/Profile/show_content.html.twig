@@ -271,14 +271,18 @@
                      <form id="upload" action="{{ path('ath_main_add_post') }}" class="form-horizontal" role="form" {{ form_enctype(form) }} method="POST">
                         <h4>{{ "new_post" | trans({}, 'home') }}</h4>
                          <div class="form-group" style="padding:14px;">
-                          {{ form_widget(form.contenu) }}
-                        <ul class="list-inline">
-                          <li>{{ form_widget(form.file) }}</li>
-                        </ul>
-
+                             {{ form_widget(form.contenu) }}
+                             <ul class="list-inline">
+                                 <li>
+                                     <label for="post_form_file" class="btn btn-primary">
+                                         <i class="glyphicon glyphicon-camera"></i> <span class="actu_value">Choisir un fichier</span>
+                                     </label>
+                                     {{ form_widget(form.file) }}
+                                 </li>
+                             </ul>
         
-                        <input type="submit" class="btn btn-primary pull-right" value="{{ "btn.send" | trans({}, 'home') }}" />
-                        {{ form_rest(form)}}
+                            <input type="submit" class="btn btn-primary pull-right" value="{{ "btn.send" | trans({}, 'home') }}" />
+                            {{ form_rest(form)}}
                         </div>
                     </form>
                   </div>
@@ -362,7 +366,7 @@
                               </a>
                             </div>
                             <div class="col-md-4">
-                                <a href="{{ path('ath_main_share_post', {'idPost': onePost.id }) }}">partager</a>
+                                <a href="{{ path('ath_main_share_post', {'idPost': onePost.id }) }}"><i class="fa fa-share-alt" aria-hidden="true"></i> Partager</a>
                             </div>
                           </div>
                         </div>

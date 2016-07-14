@@ -8471,6 +8471,49 @@ h1.title-error {
 }
 .list-inline .btn.btn-primary:hover {
   background-color: #b3de1d !important;
-  color: white;
+  color: black;
   border: 1px solid #b3de1d;
+}
+
+/** Search asso **/
+.asso_search {
+  position: relative;
+  width: 70%;
+  margin: auto;
+}
+#sports_form_sports {
+  width: 100%;
+  padding: 6px 12px;
+  padding-right: 0;
+  border: none;
+  background: #F1F1F1;
+  height: 49px;
+  color: #333;
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.asso_search .edited {
+  padding: 8px 0px;
+}
+.asso_search .btn.btn-default {
+  background-color: #33CCFF;
+  border: 1px solid #33CCFF;
+  color: white;
+  width: 100%;
+  font-size: 18px;
+  padding: 11px 12px;
 }
