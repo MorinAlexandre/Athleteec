@@ -8459,3 +8459,18 @@ h1.title-error {
 .reviews_list .panel-heading .col-md-3 {
   text-align: right;
 }
+#post_form_contenu {
+  margin-bottom: 10px;
+}
+.list-inline {
+  margin-bottom: 25px;
+}
+.list-inline .btn.btn-primary {
+  background-color: #33CCFF;
+  border: 1px solid #33CCFF;
+}
+.list-inline .btn.btn-primary:hover {
+  background-color: #b3de1d !important;
+  color: white;
+  border: 1px solid #b3de1d;
+}

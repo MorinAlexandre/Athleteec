@@ -16,7 +16,11 @@ class PostFormType extends AbstractType
     {
         $builder
             ->add('contenu', 'textarea', array('attr' => array('class' => 'form-control', 'placeholder' => 'placeholder.new_post')))
-            ->add('file', 'file', array('required' => false, 'multiple' => false, 'attr' => array('class' => 'glyphicon glyphicon-camera')))
+            ->add('file', 'file', array(
+                'required' => false,
+                'multiple' => false,
+                'attr' => array('class' => 'hidden'),
+            ))
             ;
     }
     
