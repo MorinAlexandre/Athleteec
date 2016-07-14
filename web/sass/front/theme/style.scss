@@ -8477,9 +8477,10 @@ h1.title-error {
 
 /** Search asso **/
 .asso_search {
-  position: relative;
-  width: 70%;
-  margin: auto;
+  width: 795px;
+  transform: translateX(-50%);
+  margin-left: 50vw;
+  top: 95px;
 }
 #sports_form_sports {
   width: 100%;
