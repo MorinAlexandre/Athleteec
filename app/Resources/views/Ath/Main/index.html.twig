@@ -89,7 +89,7 @@
                     <div class="panel panel-default" id="panel{{ onePost.id }}" data-id="{{ onePost.id }}">
                        <div class="panel-heading">
                         <div class="row" style="font-size: 12px">
-                          <div class="col-md-10">
+                          <div class="col-md-9">
                             <a href="{{ path('ath_user_show_profile',{'slug': onePost.createdBy.slug }) }}">
                               <img class="" src="{{ onePost.createdBy.webPath | imagine_filter('micro') }}" alt="{{ onePost.createdBy }}" title="{{ onePost.createdBy }}" />
                             <i>{{ onePost.createdBy }}</i>
@@ -105,10 +105,11 @@
                             
                             {% endif %}
                           </div>
-                          <div class="col-md-2">
+                          <div class="col-md-3">
                             {# <span class="pull-right"> #}
                               {{ onePost.createdAt |localizeddate('short', "none")}}
                               {% if onePost.createdBy == app.user %}
+                                  <br />
                                   <a href="#" class="removePost" data-confirm="Voulez-vous vraiment supprimer cette article?"><i class="fa fa-trash-o" aria-hidden="true"></i> Supprimer</a>
                               {% endif %}
                             {# </span> #}
@@ -160,7 +161,7 @@
                               </a>
                             </div>
                             <div class="col-md-4">
-                                <a href="{{ path('ath_main_share_post', {'idPost': onePost.id }) }}"><i class="fa fa-share-alt" aria-hidden="true"></i> partager</a>
+                                <a href="{{ path('ath_main_share_post', {'idPost': onePost.id }) }}"><i class="fa fa-share-alt" aria-hidden="true"></i> Partager</a>
                             </div>
                           </div>
                         </div>
