@@ -8461,6 +8461,23 @@ h1.title-error {
   width: 101%;
 }
 
+.prof_pic .btn.btn-primary {
+  background-color: #33CCFF;
+  border: 1px solid #33CCFF;
+  overflow: hidden;
+}
+.prof_pic .btn.btn-primary:hover {
+  background-color: #b3de1d !important;
+  color: black;
+  border: 1px solid #b3de1d;
+}
+.profile_value {
+  font-size: 12px;
+}
+#ath_user_edit_profile_file {
+  display: none;
+}
+
 /** Accueil **/
 .reviews_list .panel-heading .col-md-3 {
   text-align: right;
@@ -8525,11 +8542,6 @@ h1.title-error {
   padding: 11px 12px;
 }
 
-
-
-.btn.btn-success.btn-outline:hover {
-  color: #272a4f !important;
-}
 
 .open_items_block button.btn-view_full {
   border: 2px solid #272a4f;
