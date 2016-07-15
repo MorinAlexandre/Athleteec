@@ -41,10 +41,10 @@ class DefaultController extends Controller
 		   foreach($donnee->item as $valeur)
 		   {
 			  //Affichages des données
-		
+			if ($valeur->enclosure['url'] == "") continue;
 		   $tableau[] = ["link" => $valeur->link,
 		   				"image" => $valeur->enclosure['url'],
-						"title" => substr($valeur->title, 0, 65)."...",
+						"title" => substr($valeur->title, 0, 45)."...",
 						"description" => $valeur->description,
 						"date" => date("d/m/Y", strtotime($valeur->pubDate))];
 		   }
