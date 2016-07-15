@@ -45,6 +45,7 @@ class DefaultController extends Controller
 		   $tableau[] = ["link" => $valeur->link,
 		   				"image" => $valeur->enclosure['url'],
 						"title" => substr($valeur->title, 0, 45)."...",
+						"fulltitle" => $valeur->title,
 						"description" => $valeur->description,
 						"date" => date("d/m/Y", strtotime($valeur->pubDate))];
 		   }
