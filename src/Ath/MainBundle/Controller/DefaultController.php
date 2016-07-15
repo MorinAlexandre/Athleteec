@@ -29,13 +29,34 @@ class DefaultController extends Controller
 
         $form = $this->createForm(new PostFormType());
 
+		$tableau = array();
+		
+		
+		if($flux = simplexml_load_file('http://www.lequipe.fr/rss/actu_rss.xml'))
+		{
+		   $donnee = $flux->channel;
+		
+		   //Lecture des données
+		
+		   foreach($donnee->item as $valeur)
+		   {
+			  //Affichages des données
+		
+		   $tableau[] = ["link" => $valeur->link,
+		   				"image" => $valeur->enclosure['url'],
+						"title" => $valeur->title,
+						"description" => $valeur->description,
+						"date" => date("d/m/Y", strtotime($valeur->pubDate))];
+		   }
+		}else echo 'Erreur de lecture du flux RSS';
+
         return $this->render('@ath_main_path/index.html.twig', array(
             'events' => $events,
             'countEvents' => $countEvents,
             'posts' => $posts,
             'amis' => $amis,
-            'form' => $form->createView()
-
+            'form' => $form->createView(),
+			'lequipe' => $tableau
         ));
     }
 
