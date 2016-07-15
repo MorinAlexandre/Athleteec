@@ -441,9 +441,32 @@
           </div> #}
           </div>
         </div>
-        <div class="col-md-3">
-        
-        </div>
+       <div class="col-md-3 colonne">
+              <div class="user_friends">
+                  <h3>
+                      <img src="{{ asset('images/equipe.png') }}" width="150" />
+                  </h3>
+                  {% for nouvelle in lequipe %}
+                      <div class="row event_preview small">
+                          <div class="col-md-6">
+                              <a href="{{ nouvelle.link }}" target="_blank">
+
+                                  <img class="" src="{{ nouvelle.image }}" alt="{{ nouvelle.title }}" title="{{ nouvelle.title }}" />
+                              </a>
+                          </div>
+                          <div class="col-md-6">
+                              <a style="text-decoration:none !important;" href="{{ nouvelle.link }}" target="_blank">
+                                  <p style="color: black; font-size: 12px; text-decoration:none !important; "><u>{{ nouvelle.title }}</u></p>
+                              </a>
+                          </div>
+                      </div>
+                  {% endfor %}
+
+                  {% if countEvents > 12 %}
+                      <a href="{{ path('ath_main_event_sportifs') }}"><button class="btn-new-info">{{ "voir_tous_events" | trans({}, 'home') }}</button></a>
+                  {% endif %}
+              </div>
+          </div>
       </div>
     </div>
   </div>

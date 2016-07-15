@@ -248,30 +248,19 @@
               <div class="user_friends">
                   <h3>
                       <img src="{{ asset('images/equipe.png') }}" width="150" />
-                      {% if countEvents > 12 %}
-                          <a href="{{ path('ath_main_event_sportifs') }}"><span>({{ countEvents }})</span></a>
-                      {% else %}
-                          <span>({{ countEvents }})</span>
-                      {% endif %}
                   </h3>
-                  {% for oneEvent in events %}
+                  {% for nouvelle in lequipe %}
                       <div class="row event_preview small">
-                          <div class="col-md-4">
-                              <a href="{{ oneEvent.siteWeb }}" target="_blank">
+                          <div class="col-md-6">
+                              <a href="{{ nouvelle.link }}" target="_blank">
 
-                                  <img class="" src="{{ oneEvent.webPath | imagine_filter('mini') }}" alt="{{ oneEvent }}" title="{{ oneEvent }}" />
+                                  <img class="" src="{{ nouvelle.image }}" alt="{{ nouvelle.title }}" title="{{ nouvelle.title }}" />
                               </a>
-                              {# <p style="color: black">{{ oneEvent.description }}:</p> #}
                           </div>
-                          <div class="col-md-8">
-                              <a href="{{ oneEvent.siteWeb }}" target="_blank">
-                                  <p style=""><u>{{ oneEvent }}:</u></p>
+                          <div class="col-md-6">
+                              <a style="text-decoration:none !important;" href="{{ nouvelle.link }}" target="_blank">
+                                  <p style="color: black; font-size: 12px; text-decoration:none !important; "><u>{{ nouvelle.title }}</u></p>
                               </a>
-                              {% if oneEvent.description | length > 20 %}
-                                  <p class="read-more" data-target="{{ oneEvent.siteWeb }}" data-confirm="{{ oneEvent.description }}" data-id="{{ oneEvent.libelle }}"><i>{{ oneEvent.description | slice(0,20) }}...</i></p>
-                              {% else %}
-                                  <p><i>{{ oneEvent.description }}</i></p>
-                              {% endif %}
                           </div>
                       </div>
                   {% endfor %}
