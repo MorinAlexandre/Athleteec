@@ -996,6 +996,19 @@ class User extends BaseUser
         return $this->userComparateurProduits;
     }
 
+    /**
+    * Get hasUserComparateurProduits
+    *
+    * @return \Doctrine\Common\Collections\Collection
+    */
+    public function hasUserComparateurProduits($produit) {
+        if ($this->userComparateurProduits->contains($produit)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function setAssociationSports($associationSports) {
           $this->associationSports[] = $associationSports;
         return $this;
@@ -1247,6 +1260,18 @@ class User extends BaseUser
         }
 
         return $ok;
+    }
+
+    public function clickComparateur(\Ath\MainBundle\Entity\Produit $produit, $action) {
+        if ($action == 'ajouter') {
+            $this->addUserComparateurProduit($produit);
+        }
+
+        if ($action == 'supprimer') {
+            $this->removeUserComparateurProduit($produit);
+        }
+
+        // return $ok;
     }
 
     /**

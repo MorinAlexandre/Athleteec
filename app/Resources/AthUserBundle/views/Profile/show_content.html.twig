@@ -76,52 +76,47 @@
       <div class="row">
         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 user_ph_width">
           <a class="user_photo_container edited" id="edited_latestpr">
-            <i class="fa fa-picture-o"></i>
-            Interêts pour les produits
+
+            {% if noProduct %}
+              <i class="fa fa-picture-o"></i>
+              Les derniers produits
+            {% else %}
+              {% if userToShow.hasRole('ROLE_CELEBRITE') %}
+                  <i class="fa fa-picture-o"></i>
+                  Mon équipement sportif
+              {% else %}
+                  <i class="fa fa-picture-o"></i>
+                  Interêts pour les produits
+              {% endif %}
+            {% endif %}
+
           </a>
         </div>
         <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9 owl_photos">
           <div id="owl-product">
-
-            <div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div>
-            <div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div>
-            <div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div><div class="item2">
-              <a title="Radical – Single Page PSD Template" data-rel="lightcase:myCollection" href="http://freelance.vioo.ru/wp-content/uploads/2015/11/demo1.png">
-                <img src="/images/f-project.jpg" height="65" width="65" alt=""></a>
-            </div>
+            {% for oneProduit in produits %}
+                <div class="item2">
+                  <a title="{{oneProduit}}" data-rel="lightcase:myCollection" href="#">
+                    {% if oneProduit.fileProduits| length > 0 %}
+                        {# <img class="" src="/{{ oneProduit.fileProduits[0].webPath  }}" alt="{{ onePost.fileProduits[0] }}" title="{{ onePost.fileProduits[0] }}"  height="65" width="65"/> #}
+                        {% include '@ath_main_path/Includes/user.html.twig' with {'user': oneProduit.fileProduits[0], 'img_filter' : 'mini' } %}
+                        {% if app.user.hasUserComparateurProduits(oneProduit) %}
+                            <a id="addComparateur" class="action-comparateur" href="#" data-id="{{ oneProduit.id }}" data-label="supprimer">
+                                Supprimer
+                            <a>
+                        {% else %}
+                            <a id="addComparateur" class="action-comparateur" href="#" data-id="{{ oneProduit.id }}" data-label="ajouter">
+                                Ajouter
+                            <a>
+                        {% endif %}
+                        
+                    {% endif %}
+                  {# <img src="/images/f-project.jpg" height="65" width="65" alt=""> #}
+                  </a>
+                </div>
+            {% endfor %}
+            
+            
           </div>
           <div class="customNavigation">
 
@@ -686,31 +681,43 @@
         e.preventDefault();
         return false;
     });
-/*
-     if( typeof  window.lightcase == "object") { 
-            $('a[data-rel^=lightcase]').lightcase
-            ({
-                transition: 'scrollHorizontal',
-                showSequenceInfo: false,
-                showTitle: true,
-                swipe: true
-            });
 
-        }*/
-        $(document).on('click','.user_photo .next',function(){
-        var owl = $("#owl-product");
+    $("body").delegate(".action-comparateur", "click",  function(e) {
+        var idProduit = $(this).attr('data-id');
+        var action = $(this).attr('data-label');
+        // ajax en cache
+        $.ajax({
+            url: "{{ path('ath_main_add_comparateur') }}",
+            type: 'POST',
+            dataType: 'html',
+            data: {idProduit: idProduit, action: action},
+          })
+          .done(function(data) {
+            if (data) {
+              $("div").find("#addComparateur").html(data);
+              // $(this).html(data);
+            }
+          })
+          .fail(function() {
+            alert("Une erreur est survenue");
+          })
 
-          owl.trigger('owl.next');
-        }); 
-         $("#owl-product").owlCarousel({
-            navigation : true,
-          // autoPlay: 3000, //Set AutoPlay to 3 seconds
-     
-          items : 10,
-          // itemsDesktop : [1199,3],
-          // itemsDesktopSmall : [979,3]
-   
-        });
+        e.preventDefault();
+        return false;
+    });
+
+      $(document).on('click','.user_photo .next',function(){
+      var owl = $("#owl-product");
+
+        owl.trigger('owl.next');
+      }); 
+       $("#owl-product").owlCarousel({
+          navigation : true,
+        // autoPlay: 3000, //Set AutoPlay to 3 seconds
+        items : 10,
+        // itemsDesktop : [1199,3],
+        // itemsDesktopSmall : [979,3]
+      });
 
       $('input[type="file"]').change(function() {
           var val = ($(this).val() != "") ? "Fichier choisi : " + $(this).val() : "Choisir un fichier";
