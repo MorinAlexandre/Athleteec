@@ -8394,6 +8394,12 @@ body.custom-background {
 }
 
 /** Home **/
+.navbar {
+  border-radius: 0px;
+}
+.navbar .container-fluid {
+  border-bottom: solid 2px #B3DE1D;
+}
 
 .user_properties .col-md-3.colonne {
   background-color: #F5F5F5;
