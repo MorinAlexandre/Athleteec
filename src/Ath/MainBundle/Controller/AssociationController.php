@@ -18,7 +18,9 @@ class AssociationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $sports = $em->getRepository('AthMainBundle:Sport')->getSportAll();
 
-        $associations = $em->getRepository('AthUserBundle:User')->getAssociationList($page,6);
+        if ('POST' !== $request->getMethod()) {
+            $associations = $em->getRepository('AthUserBundle:User')->getAssociationList($page,6);
+        }
 
 
         if ('POST' === $request->getMethod()) {
@@ -26,14 +28,17 @@ class AssociationController extends Controller
 
             if ($form->isValid()) {
                 $data = $form->getData();
-                $searchAssociations = [];
+                $filtreSports = $data->sports;
+                
+                $searchAssociations = $em->getRepository('AthUserBundle:User')->getAssociationFiltre($filtreSports, $page,6);
+               /* $searchAssociations = [];
                 foreach ($associations as $association) {
                     foreach ($association->getAssociationSports() as $sport) {
                         if ($sport->getName() == $data->sports->getName()) {
                             $searchAssociations[] = $association;
                         }
                     }
-                }
+                }*/
 
                 $pagination = array(
                     'page' => $page,
