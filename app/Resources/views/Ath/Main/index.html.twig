@@ -252,7 +252,7 @@
                   {% for nouvelle in lequipe %}
                       <div class="row event_preview small">
                           <div class="col-md-6">
-                              <a href="{{ nouvelle.link }}" target="_blank">
+                              <a href="{{ nouvelle.link }}" title="{{ nouvelle.title }}" target="_blank">
 
                                   <img width="135px" height="90px" class="" src="{{ nouvelle.image }}" alt="{{ nouvelle.title }}" title="{{ nouvelle.title }}" />
                               </a>
