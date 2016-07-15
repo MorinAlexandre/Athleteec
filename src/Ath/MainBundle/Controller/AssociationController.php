@@ -18,9 +18,7 @@ class AssociationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $sports = $em->getRepository('AthMainBundle:Sport')->getSportAll();
 
-        if ('POST' !== $request->getMethod()) {
-            $associations = $em->getRepository('AthUserBundle:User')->getAssociationList($page,6);
-        }
+        $associations = $em->getRepository('AthUserBundle:User')->getAssociationList($page,6);
 
 
         if ('POST' === $request->getMethod()) {
@@ -29,8 +27,15 @@ class AssociationController extends Controller
             if ($form->isValid()) {
                 $data = $form->getData();
                 $filtreSports = $data->sports;
-                
-                $searchAssociations = $em->getRepository('AthUserBundle:User')->getAssociationFiltre($filtreSports, $page,6);
+
+                if (count($filtreSports) == 0) {
+                    $searchAssociations = $associations;
+                }   
+                else // on a des sports on filtre
+                {
+                    $searchAssociations = $em->getRepository('AthUserBundle:User')->getAssociationFiltre($filtreSports, $page,6);
+                }
+
                /* $searchAssociations = [];
                 foreach ($associations as $association) {
                     foreach ($association->getAssociationSports() as $sport) {
