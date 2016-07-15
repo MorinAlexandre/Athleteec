@@ -53,6 +53,25 @@ class ProfileController extends BaseController
 
         $amiFollows = $em->getRepository('AthUserBundle:User')->getAmiFollows($user);
         
+        if ($userToShow->hasRole('ROLE_CELEBRITE')) {
+            $produits = $em->getRepository('AthMainBundle:Produit')->getMyProducts($userToShow);
+        }
+        else // on récupère les products de son comparateur
+        {
+            $comparateurProduits = $userToShow->getUserComparateurProduits();
+            $produits = array();
+            foreach ($comparateurProduits as $oneProduit) {
+                $produits[] = $oneProduit;
+            }
+        }
+
+        $noProduct = false;
+        if(!$produits){
+            // on récupère les 20 derniers produits
+            $produits = $em->getRepository('AthMainBundle:Produit')->getLastProductsLimit();
+            $noProduct = true;
+        }
+
         // 10 derniers posts
         $posts = $em->getRepository('AthMainBundle:Post')->getMyLimitfeed($userToShow);
 
@@ -65,7 +84,9 @@ class ProfileController extends BaseController
             'amiFollows' => $amiFollows,
             'countFollowers' => $countFollowers,
             'posts' => $posts,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'produits' => $produits,
+            'noProduct' => $noProduct
         ));
     }
     /**
