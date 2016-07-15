@@ -8393,6 +8393,20 @@ body.custom-background {
   z-index: 5;
 }
 
+/** Home **/
+
+.user_properties .col-md-3.colonne {
+  background-color: #e2e2e2;
+}
+.user_friends .event_preview {
+  border: solid 2px #301E52;
+  border-radius: 6px;
+  margin: -9px -9px 15px -9px;
+}
+.user_friends .event_preview:hover {
+  border: solid 2px #b3de1d;
+}
+
 /** Errors */
 h1.title-error {
   padding-bottom: 20px;
