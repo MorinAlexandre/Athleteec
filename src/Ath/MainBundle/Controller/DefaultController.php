@@ -17,6 +17,9 @@ class DefaultController extends Controller
 
     public function indexAction(Request $request)
     {
+		$_SESSION['userid'] = $this->getUser()->getId();
+		//$this->get('session')->set('userid', $this->getUser());
+
     	$user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $events = $em->getRepository('AthMainBundle:EventAdmin')->getNotFinishedLimitEvents($user);
