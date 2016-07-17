@@ -7,8 +7,13 @@
         {{ form_row(form._token) }}
         <div class="col-sm-9 col-md-10 pull-right">
           <div class="radio">
-            <label class="radio-inline"><input type="radio" name="optradio" value="all" checked="checked">Tous les produits</label>
-            <label class="radio-inline"><input type="radio" name="optradio" value="my">Mes produits</label>
+            {% if seeAll == 'all' %}
+              <label class="radio-inline"><input type="radio" name="optradio" value="all" checked="checked">Tous les produits</label>
+              <label class="radio-inline"><input type="radio" name="optradio" value="my">Mes produits</label>
+            {% else %}
+              <label class="radio-inline"><input type="radio" name="optradio" value="all">Tous les produits</label>
+              <label class="radio-inline"><input type="radio" name="optradio" value="my" checked="checked">Mes produits</label>
+            {% endif %}
           </div>
         </div>
         <div class="col-sm-9 col-md-10">
