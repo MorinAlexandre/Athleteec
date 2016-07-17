@@ -257,7 +257,7 @@ EOD;
 <div id="content" class="$nosubnav">
 {$body}
 </div>
-<div id="power" style="text-align:center;padding-top:10px;display:none;"><a href="http://www.cometchat.com" target="_blank">Powered by CometChat</a></div>
+<div id="power" style="text-align:center;padding-top:10px;display:none;"></div>
 </div>
 {$errorjs}
 </body>

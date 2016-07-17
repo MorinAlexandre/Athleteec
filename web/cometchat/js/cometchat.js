@@ -138,8 +138,8 @@
             }
         };
         function branded(){
-            $("body").append('<div id="cc_power" style="display:none">Powered By <a href="http://www.cometchat.com">CometChat</a></div>');
-            language[1] = 'Powered By <a href="http://www.cometchat.com">CometChat</a>';
+            $("body").append('<div id="cc_power" style="display:none"></div>');
+            language[1] = '';
         };
         function preinitialize(){
             if(typeof(cc_synergy_enabled)!="undefined" && cc_synergy_enabled == 1){

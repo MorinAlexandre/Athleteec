@@ -113,8 +113,8 @@
                     modules = '';
                 }
 
-                if(language[1] == 'Powered By <a href="http://www.cometchat.com">CometChat</a>'){
-                    trayData += '<div class="cometchat_power">'+language[1]+'</div>';
+                if(language[1] == ''){
+                    trayData += '';
                 }
 
                 var cc_state = $.cookie(settings.cookiePrefix+'state');

@@ -248,7 +248,7 @@ if (!empty($_REQUEST["cc_theme"]) && ($_REQUEST["cc_theme"] == 'synergy')) {
 
 /* THEME START */
 
-$theme = setConfigValue('theme','glass');
+$theme = setConfigValue('theme','hangout');
 
 /* THEME END */
 
@@ -305,8 +305,8 @@ define('DISABLE_LINKING',setConfigValue('DISABLE_LINKING','0'));      // Set to 
 define('DISABLE_YOUTUBE',setConfigValue('DISABLE_YOUTUBE','1'));      // Set to 1 if you want to disable YouTube thumbnail
 define('CACHING_ENABLED',setConfigValue('CACHING_ENABLED','0'));      // Set to 1 if you would like to cache CometChat
 define('GZIP_ENABLED',setConfigValue('GZIP_ENABLED','0'));       // Set to 1 if you would like to compress output of JS and CSS
-define('DEV_MODE',setConfigValue('DEV_MODE','1'));         // Set to 1 only during development
-define('ERROR_LOGGING',setConfigValue('ERROR_LOGGING','1'));      // Set to 1 to log all errors (error.log file)
+define('DEV_MODE',setConfigValue('DEV_MODE','0'));         // Set to 1 only during development
+define('ERROR_LOGGING',setConfigValue('ERROR_LOGGING','0'));      // Set to 1 to log all errors (error.log file)
 define('ONLINE_TIMEOUT',USE_COMET?REFRESH_BUDDYLIST*2:($maxHeartbeat/1000*2.5));
                     // Time in seconds after which a user is considered offline
 define('DISABLE_ANNOUNCEMENTS',setConfigValue('DISABLE_ANNOUNCEMENTS','0'));  // Reduce server stress by disabling announcements
