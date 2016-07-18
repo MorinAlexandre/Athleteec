@@ -8582,3 +8582,29 @@ h1.title-error {
   margin-top: 28px;
   padding: 13px 20px
 }
+
+/** Pagination **/
+
+.pagination {
+  display: block;
+  width: auto;
+  transform: translateX(-50%);
+  margin-left: 50%;
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.pagination .pagination-buttons a {
+  padding: 7px 8px;
+  border: 1px solid #6B6565;
+  background-color: #F5F5F5;
+  color: #6B6565;
+  border-radius: 3px;
+}
+.pagination .pagination-buttons a.current-page {
+  padding: 7px 8px;
+  border: 1px solid #b3de1d;
+  background-color: #b3de1d;
+  color: #000;
+  border-radius: 3px;
+}
