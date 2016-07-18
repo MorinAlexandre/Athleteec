@@ -14,8 +14,8 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
      */
     static private $kernel;
 
-    protected $username = array();
-    protected $password = array();
+    protected $username;
+    protected $password;
 
     public function __construct()
     {
@@ -94,6 +94,7 @@ abstract class WebTestCase extends \PHPUnit_Framework_TestCase
     {
         $crawler = $client->request('GET', self::$kernel->getContainer()->get('router')->generate('user_security_login'));
         $this->assertTrue($crawler->filter('form input[type="submit"]')->count() > 0);
+      	
         $form    = $crawler->filter('form input[type="submit"]')->form();
         
         //on récupère les identifiants et soumet le form
