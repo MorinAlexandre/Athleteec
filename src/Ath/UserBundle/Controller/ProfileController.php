@@ -99,7 +99,6 @@ class ProfileController extends BaseController
 		   }
 		}else echo 'Erreur de lecture du flux RSS';
 
-
         return $this->render('FOSUserBundle:Profile:show.html.twig', array(
             'user' => $user,
             'userToShow' => $userToShow,
