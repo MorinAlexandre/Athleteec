@@ -313,7 +313,6 @@ class User extends BaseUser
         $this->associationSports = new ArrayCollection();
         $this->groupApplications = new ArrayCollection();
         $this->postLikes = new ArrayCollection();
-
     }
 
     /**
@@ -929,6 +928,14 @@ class User extends BaseUser
       return $this->demandeCelebrites;
     }
 
+    public function addDemandeCelebrite(\Ath\MainBundle\Entity\DemandeCelebrite $demandeCelebrite)
+    {
+        if (!$this->demandeCelebrites->contains($demandeCelebrite))
+            $this->demandeCelebrites->add($demandeCelebrite);
+        
+        return $this;
+    }
+
     public function setUserInteretSports($userInteretSports) {
 
           $this->userInteretSports[] = $userInteretSports;
@@ -1253,7 +1260,7 @@ class User extends BaseUser
                     $dateAutoriser->add(new \DateInterval('P30D'));
                     $now = new \DateTime();
                     // le user peut refaire une demande 30j après sa dernière demande
-                    if($now > $dateAutoriser)
+                    if($now >= $dateAutoriser)
                         $ok = true;
                 }
             }
