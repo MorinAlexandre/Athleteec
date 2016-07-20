@@ -3,6 +3,7 @@ parameters:
     database_host: 127.0.0.1
     database_port: null
     database_name: athleteec
+    database_name_test: test_athleteec
     database_user: root
     database_password: null
     mailer_transport: smtp
